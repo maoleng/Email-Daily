@@ -23,6 +23,7 @@ class BodyMail extends Mailable
     public function build()
     {
         return $this
+            ->from('napoleon_dai_de@tanthe.com', 'Lời thì thầm của Chúa')
             ->subject($this->title)
             ->view($this->view);
     }
