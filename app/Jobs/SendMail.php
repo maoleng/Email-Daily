@@ -16,16 +16,18 @@ class SendMail implements ShouldQueue
 
     private $body_mail;
     private $email;
+    private $type;
 
-    public function __construct($body_mail, $email)
+    public function __construct($body_mail, $email, $type)
     {
         $this->body_mail = $body_mail;
         $this->email = $email;
+        $this->type = $type;
     }
 
     public function handle()
     {
-        Mail::mailer('normal')
+        Mail::mailer($this->type)
         ->to($this->email)->send($this->body_mail);
     }
 }
