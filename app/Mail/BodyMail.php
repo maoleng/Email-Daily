@@ -14,15 +14,16 @@ class BodyMail extends Mailable
 
     private $title;
 
-    public function __construct($title)
+    public function __construct($title, $view)
     {
         $this->title = $title;
+        $this->view = $view;
     }
 
     public function build()
     {
         return $this
             ->subject($this->title)
-            ->view('welcome');
+            ->view($this->view);
     }
 }

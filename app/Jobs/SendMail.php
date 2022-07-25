@@ -25,6 +25,7 @@ class SendMail implements ShouldQueue
 
     public function handle()
     {
-        Mail::to($this->email)->send($this->body_mail);
+        Mail::mailer('normal')
+        ->to($this->email)->send($this->body_mail);
     }
 }

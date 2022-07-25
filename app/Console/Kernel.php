@@ -15,10 +15,12 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\LoopSendMail::class,
+        Commands\LoopSendMailVen::class,
     ];
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('command:send_mail')->everyThirtyMinutes();
+         $schedule->command('command:send_mail_ven')->everyTwoHours();
     }
 
     /**

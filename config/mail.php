@@ -45,6 +45,27 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        'school' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_SCHOOL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_SCHOOL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_SCHOOL_USERNAME'),
+            'password' => env('MAIL_SCHOOL_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+        'normal' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_NORMAL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_NORMAL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_NORMAL_USERNAME'),
+            'password' => env('MAIL_NORMAL_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],
