@@ -20,14 +20,15 @@ return new class extends Migration
             $table->longText('avatar')->nullable();
             $table->string('password',250)->nullable();
             $table->integer('role')->default(1);
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('token_verify',250)->nullable();
+            $table->boolean('active')->default(0);
             $table->string('facebook_id',250)->nullable();
             $table->string('google_id',250)->nullable();
             $table->string('github_id',250)->nullable();
             $table->string('gitlab_id',250)->nullable();
             $table->string('twitter_id',250)->nullable();
             $table->string('linkedin_id',250)->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('token_verify',250)->nullable();
             $table->timestamps();
         });
     }
