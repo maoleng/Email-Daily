@@ -31,4 +31,34 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_SECRET_ACCESS_KEY'),
+        'redirect' => env('FACEBOOK_REDIRECT_URL'),
+    ],
+
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_SECRET_ACCESS_KEY'),
+        'redirect' => env('GITHUB_REDIRECT_URL'),
+    ],
+
+    'gitlab' => [
+        'client_id' => env('GITLAB_CLIENT_ID'),
+        'client_secret' => env('GITLAB_SECRET_ACCESS_KEY'),
+        'redirect' => env('GITLAB_REDIRECT_URL'),
+    ],
+
+    'linkedin' => [
+        'client_id' => env('LINKEDIN_CLIENT_ID'),
+        'client_secret' => env('LINKEDIN_SECRET_ACCESS_KEY'),
+        'redirect' => env('LINKEDIN_REDIRECT_URL'),
+    ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_SECRET_ACCESS_KEY'),
+        'redirect' => env('GOOGLE_REDIRECT_URL'),
+    ],
+
 ];
