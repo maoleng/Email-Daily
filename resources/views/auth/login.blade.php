@@ -1,7 +1,6 @@
 @extends('auth.master')
 
 @section('head')
-
 <div class="fxt-transformX-L-50 fxt-transition-delay-5">
     <div class="fxt-middle-content">
         <h1 class="fxt-main-title">Sign In</h1>
@@ -40,19 +39,19 @@
 </div>
 <ul class="fxt-socials">
     <li class="fxt-google">
-        <a href="#" title="google"><i class="fab fa-google"></i></a>
+        <a href="{{route('auth.redirect', ['social' => 'google'])}}" title="google"><i class="fab fa-google"></i></a>
     </li>
     <li class="fxt-github">
-        <a href="#" title="github"><i class="fab fa-github"></i></a>
+        <a href="{{route('auth.redirect', ['social' => 'github'])}}" title="github"><i class="fab fa-github"></i></a>
     </li>
     <li class="fxt-gitlab">
-        <a href="#" title="gitlab"><i class="fab fa-gitlab"></i></a>
+        <a href="{{route('auth.redirect', ['social' => 'gitlab'])}}" title="gitlab"><i class="fab fa-gitlab"></i></a>
     </li>
     <li class="fxt-linkedin">
-        <a href="#" title="linkedin"><i class="fab fa-linkedin"></i></a>
+        <a href="{{route('auth.redirect', ['social' => 'linkedin'])}}" title="linkedin"><i class="fab fa-linkedin"></i></a>
     </li>
     <li class="fxt-facebook">
-        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="{{route('auth.redirect', ['social' => 'facebook'])}}" title="Facebook"><i class="fab fa-facebook-f"></i></a>
     </li>
 </ul>
 @endsection
