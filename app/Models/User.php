@@ -10,6 +10,8 @@ class User extends Model
 {
     use HasFactory;
 
+    public const TIME_VERIFY = 180; //minutes
+
     protected $fillable = [
         'name', 'email', 'avatar', 'password', 'role', 'email_verified_at', 'token_verify',
         'active',
