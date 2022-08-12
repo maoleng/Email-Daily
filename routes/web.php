@@ -6,8 +6,10 @@ use App\Http\Controllers\SendMailController;
 use App\Http\Middleware\AuthLogin;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'auth', 'as' => 'auth'], static function() {
-    Route::get('/login', [AuthController::class, 'login']);
+Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::get('/{social}/redirect', [SocialLoginController::class, 'redirect'])->name('auth');
     Route::get('/{social}/callback', [SocialLoginController::class, 'callback'])->name('callback');
 });

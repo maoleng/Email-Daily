@@ -29,6 +29,6 @@
             <button type="submit" class="fxt-btn-fill">Verify</button>
         </div>
     </form>
-    <div class="fxt-switcher-description3">Not received your code?<a href="login-34.html" class="fxt-switcher-text ms-1">Resend code</a></div>
+    <div class="fxt-switcher-description3">Not received your code?<a href="" class="fxt-switcher-text ms-1">Resend code</a></div>
 </div>
 @endsection

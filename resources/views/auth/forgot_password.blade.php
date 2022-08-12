@@ -26,6 +26,6 @@
             <button type="submit" class="fxt-btn-fill">Sign In</button>
         </div>
     </form>
-    <div class="fxt-switcher-description3">Return to?<a href="login-34.html" class="fxt-switcher-text ms-1">Log in</a></div>
+    <div class="fxt-switcher-description3">Return to?<a href="{{route('auth.login')}}" class="fxt-switcher-text ms-1">Log in</a></div>
 </div>
 @endsection

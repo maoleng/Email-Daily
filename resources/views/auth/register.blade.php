@@ -4,7 +4,7 @@
 <div class="fxt-transformX-L-50 fxt-transition-delay-5">
     <div class="fxt-middle-content">
         <h1 class="fxt-main-title">Sign Up to Rechage Direct</h1>
-        <div class="fxt-switcher-description1">If you have an account You can<a href="login-34.html" class="fxt-switcher-text ms-2">Sign In</a></div>
+        <div class="fxt-switcher-description1">If you have an account You can<a href="{{route('auth.login)}}" class="fxt-switcher-text ms-2">Sign In</a></div>
     </div>
 </div>
 <div class="fxt-transformX-L-50 fxt-transition-delay-7">

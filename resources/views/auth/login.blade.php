@@ -5,7 +5,7 @@
 <div class="fxt-transformX-L-50 fxt-transition-delay-5">
     <div class="fxt-middle-content">
         <h1 class="fxt-main-title">Sign In</h1>
-        <div class="fxt-switcher-description1">If you don’t have an account You can<a href="register-34.html" class="fxt-switcher-text ms-2">Sign Up</a></div>
+        <div class="fxt-switcher-description1">If you don’t have an account You can<a href="{{route('auth.register')}}" class="fxt-switcher-text ms-2">Sign Up</a></div>
     </div>
 </div>
 <div class="fxt-transformX-L-50 fxt-transition-delay-7">
@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             <div class="fxt-switcher-description2 text-right">
-                <a href="forgot-password-34.html" class="fxt-switcher-text">Recovery Password</a>
+                <a href="{{route('auth.forgot_password')}}" class="fxt-switcher-text">Recovery Password</a>
             </div>
         </div>
         <div class="form-group">
