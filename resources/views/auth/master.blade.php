@@ -55,5 +55,6 @@
 <script src="{{asset('js/imagesloaded.pkgd.min.js')}}"></script>
 <script src="{{asset('js/validator.min.js')}}"></script>
 <script src="{{asset('js/main.js')}}"></script>
+@yield('script')
 </body>
 </html>
