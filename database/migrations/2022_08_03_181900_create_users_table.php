@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('token_verify',250)->nullable();
             $table->boolean('active')->default(0);
+            $table->integer('count_system_mail_daily')->default(0);
             $table->string('facebook_id',250)->nullable();
             $table->string('google_id',250)->nullable();
             $table->string('github_id',250)->nullable();

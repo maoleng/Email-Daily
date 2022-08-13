@@ -10,10 +10,11 @@ class User extends Base
     use HasFactory;
 
     public const TIME_VERIFY = 180; //minutes
+    public const MAX_SYSTEM_MAIL_PER_DAY = 3;
 
     protected $fillable = [
         'name', 'email', 'avatar', 'password', 'role', 'email_verified_at', 'token_verify',
-        'active',
+        'active', 'count_system_mail_daily',
         'facebook_id', 'google_id', 'github_id', 'gitlab_id', 'twitter_id', 'linkedin_id',
     ];
 
