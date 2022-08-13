@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('devices', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('device_id', 250);
             $table->foreignId('user_id')->constrained('users');
             $table->text('token');

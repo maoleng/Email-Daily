@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->timestamp('time');
             $table->foreignId('template_id')->constrained('templates');
         });

@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Model
+class User extends Base
 {
     use HasFactory;
 
@@ -21,6 +20,16 @@ class User extends Model
     protected $casts = [
         'active' => 'boolean',
     ];
+
+    protected function setPasswordAttribute($value): void
+    {
+        $this->attributes['password'] = password_hash($value, PASSWORD_BCRYPT);
+    }
+
+    public function verify($password): bool
+    {
+        return password_verify($password, $this->password);
+    }
 
     public function devices(): HasMany
     {
