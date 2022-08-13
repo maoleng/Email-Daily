@@ -16,13 +16,20 @@
 
 @section('content')
 <div class="fxt-form">
-    <form method="POST">
+    <form method="POST" action="{{route('auth.process_login')}}">
+        @csrf
         <div class="form-group">
-            <input type="email" id="email" class="form-control" name="email" placeholder="Enter Email or Mobile Number" required="required">
+            <input type="email" id="email" class="form-control" name="email" value="{{old('email')}}" placeholder="Enter Email or Mobile Number" required="required">
+            @if ($errors->default->get('email'))
+                {{ $errors->default->get('email')[0] }}
+            @endif
         </div>
         <div class="form-group">
-            <input id="password" type="password" class="form-control" name="password" placeholder="********" required="required">
+            <input id="password" type="password" class="form-control" name="password" {{old('password')}} placeholder="********" required="required">
             <i toggle="#password" class="fa fa-fw fa-eye toggle-password field-icon"></i>
+            @if ($errors->default->get('password'))
+                {{ $errors->default->get('password')[0] }}
+            @endif
         </div>
         <div class="form-group">
             <div class="fxt-switcher-description2 text-right">
@@ -32,6 +39,11 @@
         <div class="form-group">
             <button type="submit" class="fxt-btn-fill">Sign In</button>
         </div>
+        @if(session()->has('message'))
+            <div class="alert alert-danger" role="alert">
+                {{session()->get('message')}}
+            </div>
+        @endif
     </form>
 </div>
 <div class="fxt-style-line">
