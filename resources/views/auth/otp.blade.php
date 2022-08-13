@@ -17,12 +17,12 @@
 @section('content')
 <div class="fxt-form">
     <a href="#" class="fxt-otp-logo"><img src="{{asset('img/elements/otp-icon.png')}}" alt="Otp Logo"></a>
-    <form id="otp-form" method="POST" action="{{route('auth.verify_register')}}">
+    <form id="otp-form" method="POST" action="{{$type === 'register' ? route('auth.verify_register') : route('auth.verify_new_location') }}">
         @csrf
         <input name="device_id" id="device_id" type="hidden">
         <label for="reset" class="fxt-label">Enter OTP Code Here</label>
         <div class="fxt-otp-row">
-            <input id="digit_1" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
+            <input id="digit_1" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required" autofocus>
             <input id="digit_2" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
             <input id="digit_3" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
             <input id="digit_4" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">

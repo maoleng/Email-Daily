@@ -3,17 +3,21 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\Device;
+use App\Models\User;
 
-class LoginRequest extends BaseRequest
+class VerifyNewLocationRequest extends BaseRequest
 {
+
     public function rules()
     {
         return [
-            'email' => [
+            'token_verify' => [
                 'required',
             ],
-            'password' => [
+            'email' => [
                 'required',
+                'email',
             ],
             'device_id' => [
                 'required',

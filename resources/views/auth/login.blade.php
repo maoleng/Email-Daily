@@ -18,6 +18,7 @@
 <div class="fxt-form">
     <form method="POST" action="{{route('auth.process_login')}}">
         @csrf
+        <input name="device_id" id="device_id" type="hidden">
         <div class="form-group">
             <input type="email" id="email" class="form-control" name="email" value="{{old('email')}}" placeholder="Enter Email or Mobile Number" required="required">
             @if ($errors->default->get('email'))
@@ -67,3 +68,12 @@
     </li>
 </ul>
 @endsection
+
+@section('script')
+    <script src="{{asset('js/device-uuid.js')}}"></script>
+    <script>
+        let device_id = new DeviceUUID().get()
+        $('#device_id').val(device_id)
+    </script>
+@endsection
+
