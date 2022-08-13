@@ -12,6 +12,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
     Route::get('/forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'processRegister'])->name('process_register');
+    Route::post('/verify_register', [AuthController::class, 'verifyRegister'])->name('verify_register');
     Route::get('/{social}/redirect', [SocialLoginController::class, 'redirect'])->name('redirect');
     Route::get('/{social}/callback', [SocialLoginController::class, 'callback'])->name('callback');
 });

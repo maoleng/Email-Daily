@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-use JetBrains\PhpStorm\ArrayShape;
+use App\Http\Requests\BaseRequest;
 
 class RegisterRequest extends BaseRequest
 {

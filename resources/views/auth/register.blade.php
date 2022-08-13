@@ -73,10 +73,9 @@
 @endsection
 
 @section('script')
-<script src="{{asset('js/device-uuid.js')}}"></script>
-<script>
-    let device_id = new DeviceUUID().get()
-    $('#device_id').val(device_id)
-</script>
-
+    <script src="{{asset('js/device-uuid.js')}}"></script>
+    <script>
+        let device_id = new DeviceUUID().get()
+        $('#device_id').val(device_id)
+    </script>
 @endsection

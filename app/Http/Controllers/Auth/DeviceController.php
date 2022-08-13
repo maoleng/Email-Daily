@@ -20,19 +20,14 @@ class DeviceController extends Controller
         ]);
     }
 
-    public function createDevice(User $user, $device_id): Builder|Model
+    public function createDevice($user, $device_id): Builder|Model
     {
         $device = Device::query()->firstOrNew([
             'device_id' => $device_id,
+            'user_id' => $user->id,
         ]);
-        $device->user_id = $user->id;
-        $device->device_id = $device_id;
         $device->token = $this->generateToken($user);
         $device->save();
-        Device::query()
-            ->where('device_id', $device_id)
-            ->where('id', '!=', $device->id)
-            ->delete();
 
         return $device;
     }
