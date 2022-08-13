@@ -11,6 +11,8 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
     Route::post('/login', [AuthController::class, 'processLogin'])->name('process_login');
     Route::get('/forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
     Route::post('/reset_password', [AuthController::class, 'processResetPassword'])->name('reset_password');
+    Route::post('/verify_reset_password', [AuthController::class, 'verifyResetPassword'])->name('verify_reset_password');
+    Route::post('/update_password', [AuthController::class, 'updatePassword'])->name('update_password');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'processRegister'])->name('process_register');
     Route::post('/verify_register', [AuthController::class, 'verifyRegister'])->name('verify_register');

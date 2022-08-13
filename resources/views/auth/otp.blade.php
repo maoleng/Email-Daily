@@ -17,16 +17,24 @@
 @section('content')
 <div class="fxt-form">
     <a href="#" class="fxt-otp-logo"><img src="{{asset('img/elements/otp-icon.png')}}" alt="Otp Logo"></a>
-    <form id="otp-form" method="POST" action="{{$type === 'register' ? route('auth.verify_register') : route('auth.verify_new_location') }}">
+    <form id="otp-form" method="POST" action="
+        @if ($type === 'register')
+            {{route('auth.verify_register')}}
+        @elseif($type === 'new_location')
+            {{route('auth.verify_new_location')}}
+        @elseif($type === 'reset_password')
+            {{route('auth.verify_reset_password')}}
+        @endif
+    ">
         @csrf
         <input name="device_id" id="device_id" type="hidden">
+        <input type="hidden" name="email" value="{{$email}}">
         <label for="reset" class="fxt-label">Enter OTP Code Here</label>
         <div class="fxt-otp-row">
             <input id="digit_1" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required" autofocus>
             <input id="digit_2" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
             <input id="digit_3" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
             <input id="digit_4" type="text" class="fxt-otp-col otp-input form-control" maxlength="1" required="required">
-            <input type="hidden" name="email" value="{{$email}}">
             <input id="token_verify" type="hidden" name="token_verify">
         </div>
         @if(session()->has('message'))

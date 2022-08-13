@@ -24,6 +24,16 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id' => Str::uuid(),
+                'key' => 'verify_new_location_title',
+                'value' => 'XÁC NHẬN ĐỊA ĐIỂM ĐĂNG NHẬP MỚI',
+            ],
+            [
+                'id' => Str::uuid(),
+                'key' => 'reset_password_title',
+                'value' => 'YÊU CẦU ĐỔI ĐẶT LẠI MẬT KHẨU',
+            ],
+            [
+                'id' => Str::uuid(),
                 'key' => 'facebook_url',
                 'value' => 'https://www.facebook.com/maolengg',
             ],

@@ -41,7 +41,7 @@
             <button type="submit" class="fxt-btn-fill">Sign In</button>
         </div>
         @if(session()->has('message'))
-            <div class="alert alert-danger" role="alert">
+            <div class="{{empty(session()->get('alert_class')) ? 'alert alert-danger' : session()->get('alert_class')}}" role="alert">
                 {{session()->get('message')}}
             </div>
         @endif

@@ -6,7 +6,7 @@ use App\Http\Requests\BaseRequest;
 use App\Models\Device;
 use App\Models\User;
 
-class VerifyNewLocationRequest extends BaseRequest
+class VerifyResetPasswordRequest extends BaseRequest
 {
 
     public function rules()

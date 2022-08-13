@@ -20,6 +20,7 @@ class BaseRequest extends FormRequest
             'email' => ':attribute chưa đúng định dạng',
             'same' => ':attribute không khớp',
             'unique' => 'Đã có người chọn :attribute này',
+            'exists' => ':attribute không tồn tại',
         ];
     }
 

@@ -6,21 +6,22 @@ use App\Http\Requests\BaseRequest;
 use App\Models\Device;
 use App\Models\User;
 
-class VerifyNewLocationRequest extends BaseRequest
+class UpdatePasswordRequest extends BaseRequest
 {
 
-    public function rules()
+    public function rules(): array
     {
         return [
-            'token_verify' => [
-                'required',
-            ],
             'email' => [
                 'required',
                 'email',
                 'exists:App\Models\User,email',
             ],
-            'device_id' => [
+            'password' => [
+                'required',
+                'same:retype_password',
+            ],
+            'retype_password' => [
                 'required',
             ],
         ];

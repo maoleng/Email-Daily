@@ -6,17 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\UpdatePasswordRequest;
 use App\Http\Requests\Auth\VerifyNewLocationRequest;
 use App\Http\Requests\Auth\VerifyRegisterRequest;
+use App\Http\Requests\Auth\VerifyResetPasswordRequest;
 use App\Jobs\SystemSendMail;
 use App\Mail\Register;
 use App\Mail\VerifyNewLocation;
+use App\Mail\VerifyResetPassword;
 use App\Models\Device;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -64,11 +66,7 @@ class AuthController extends Controller
     public function verifyRegister(VerifyRegisterRequest $request)
     {
         $data = $request->validated();
-
         $user = User::query()->where('email', $data['email'])->first();
-        if (empty($user)) {
-            return redirect()->route('auth.register');
-        }
         if ($this->checkExpireVerifyToken($user, $data['email'], 'register')) {
             return view('auth.otp', [
                 'email' => $data['email'],
@@ -93,9 +91,6 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         $user = User::query()->where('email', $data['email'])->first();
-        if (empty($user)) {
-            return redirect()->route('auth.register');
-        }
         if ($this->checkExpireVerifyToken($user, $data['email'], 'new_location')) {
             return view('auth.otp', [
                 'email' => $data['email'],
@@ -196,9 +191,61 @@ class AuthController extends Controller
         ];
     }
 
-    public function processResetPassword(ResetPasswordRequest $request)
+    public function processResetPassword(ResetPasswordRequest $request): View
     {
-        dd($request->validated());
+        $data = $request->validated();
+        $user = User::query()->where('email', $data['email'])->first();
+        $token_verify = random_int(1000, 9999);
+        $user->update([
+            'token_verify' => $token_verify,
+            'email_verified_at' => now(),
+        ]);
+        $send_mail = new SystemSendMail([
+            'email' => $data['email'],
+            'mail_content' => new VerifyResetPassword($token_verify),
+        ]);
+        dispatch($send_mail);
+
+        return view('auth.otp', [
+            'email' => $data['email'],
+            'type' => 'reset_password',
+        ]);
+    }
+
+    public function verifyResetPassword(VerifyResetPasswordRequest $request): View
+    {
+        $data = $request->validated();
+        $user = User::query()->where('email', $data['email'])->first();
+        if ($this->checkExpireVerifyToken($user, $data['email'], 'reset_password')) {
+            return view('auth.otp', [
+                'email' => $data['email'],
+                'type' => 'reset_password',
+            ]);
+        }
+        if ($user->token_verify !== $data['token_verify']) {
+            Session::flash('message', 'Sai mã xác thực');
+            return view('auth.otp', [
+                'email' => $data['email'],
+                'type' => 'reset_password',
+            ]);
+        }
+        (new DeviceController())->createDevice($user, $data['device_id']);
+
+        return view('auth.reset_password', [
+            'email' => $data['email'],
+        ]);
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $user = User::query()->where('email', $data['email'])->first();
+        $user->password = $data['password'];
+        $user->save();
+        Session::flash('message', 'Đổi mật khẩu thành công');
+        Session::flash('alert_class', 'alert alert-primary');
+
+        return redirect()->route('auth.login');
     }
 
     public function checkExpireVerifyToken($user, $email, $type): bool
@@ -206,13 +253,22 @@ class AuthController extends Controller
         $expire_verify_time = Carbon::make($user->email_verified_at)->addMinutes(User::TIME_VERIFY);
         if ($expire_verify_time->lt(now())) {
             $token_verify = random_int(1000, 9999);
+            if ($type === 'register') {
+                $mail_content = new Register($token_verify);
+            }
+            if ($type === 'new_location') {
+                $mail_content = new VerifyNewLocation($token_verify);
+            }
+            if ($type === 'reset_password') {
+                $mail_content = new VerifyResetPassword($token_verify);
+            }
             $user->update([
                 'token_verify' => $token_verify,
                 'email_verified_at' => now(),
             ]);
             $send_mail = new SystemSendMail([
                 'email' => $email,
-                'mail_content' => $type === 'register' ? (new Register($token_verify)) : (new VerifyNewLocation($token_verify)),
+                'mail_content' => $mail_content,
             ]);
             dispatch($send_mail);
             Session::flash('message', 'Mã xác thực của bạn đã hết hạn, chúng tôi đã gửi 1 mã mới');

@@ -18,6 +18,7 @@ class VerifyRegisterRequest extends BaseRequest
             'email' => [
                 'required',
                 'email',
+                'exists:App\Models\User,email',
             ],
             'device_id' => [
                 'required',
