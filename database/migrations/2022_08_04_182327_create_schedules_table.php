@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->timestamp('time');
-            $table->foreignId('template_id')->constrained('templates');
+            $table->uuid('template_id');
+            $table->foreign('template_id')->references('id')->on('templates');
         });
     }
 

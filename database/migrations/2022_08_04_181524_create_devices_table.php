@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('device_id', 250);
-            $table->foreignId('user_id')->constrained('users');
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->text('token');
             $table->timestamps();
         });
