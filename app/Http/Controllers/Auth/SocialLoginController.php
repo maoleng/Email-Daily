@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -18,17 +19,21 @@ class SocialLoginController extends Controller
     {
         $user = Socialite::driver($social)->stateless()->user();
 
-        dd($user);
-        $saveUser = User::updateOrCreate([
-            'facebook_id' => $user->getId(),
-        ],[
-            'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'password' => Hash::make($user->getName().'@'.$user->getId())
-        ]);
+        User::query()->updateOrCreate(
+            [
+                'email' => $user->email,
+            ],
+            [
+                'name' => $user->name,
+                'email' => $user->email,
+                $social . '_id' => $user->id,
+                'avatar' => $user->avatar,
+                'active' => true,
+            ],
+        );
 
-        Auth::loginUsingId($saveUser->id);
+        //TODO: xu li chuyen huong
+        dd('thanh cong, se chuyen huong');
 
-        return redirect()->route('home');
     }
 }
