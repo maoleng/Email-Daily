@@ -72,6 +72,9 @@
     <li class="fxt-facebook">
         <a href="{{route('auth.redirect', ['social' => 'facebook'])}}" title="Facebook"><i class="fab fa-facebook-f"></i></a>
     </li>
+    <li class="fxt-twitter">
+        <a href="{{route('auth.redirect', ['social' => 'twitter'])}}" title="Twitter"><i class="fab fa-twitter"></i></a>
+    </li>
 </ul>
 @endsection
 
