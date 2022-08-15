@@ -22,7 +22,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app.master');
 });
 Route::get('/send', [SendMailController::class, 'sendMail']);
 
