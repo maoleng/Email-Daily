@@ -1,14 +1,14 @@
 @extends('app-theme.master')
 
 @section('title')
-    Thêm mẫu tin nhắn
+    Sửa mẫu tin nhắn
 @endsection
 
 @section('content')
     <div class="intro-y col-span-12 lg:col-span-6">
         <form action="" id="form">
             <div class="intro-y box p-5">
-                <h2 class="font-medium text-base mr-auto">Nội dung mẫu tin nhắn</h2>
+                    <h2 class="font-medium text-base mr-auto">Nội dung mẫu tin nhắn</h2>
                 <br>
                 <div>
                     <label for="crud-form-1" class="form-label">Tiêu đề</label>
@@ -32,6 +32,23 @@
 
     <div class="intro-y col-span-12 lg:col-span-6">
         <div class="intro-y box">
+            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+                <h2 class="font-medium text-base mr-auto">Ảnh bìa</h2>
+            </div>
+            <form data-single="true" action="/file-upload" class="dropzone">
+                <div class="fallback">
+                    <input name="file" type="file" />
+                </div>
+                <div class="dz-message" data-dz-message>
+                    <div class="text-lg font-medium">Drop files here or click to upload.</div>
+                    <div class="text-slate-500">
+                        This is just a demo dropzone. Selected files are <span class="font-medium">not</span> actually uploaded.
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="intro-y box mt-5">
             <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                 <h2 class="font-medium text-base mr-auto">Thời gian</h2>
                 <div class="form-check form-switch w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0">
