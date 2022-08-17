@@ -14,9 +14,6 @@
                 </div>
                 <div class="side-menu__title">
                     Dashboard
-                    <div class="side-menu__sub-icon transform rotate-180">
-                        <i data-lucide="chevron-down"></i>
-                    </div>
                 </div>
             </a>
         </li>

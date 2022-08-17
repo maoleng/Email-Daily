@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark theme-1">
+<html lang="en" class="light theme">
     @include('app.page')
 
     <body class="py-5">
@@ -11,7 +11,7 @@
                 <div class="grid grid-cols-12 gap-6">
                     <div class="col-span-12 2xl:col-span-9">
                         <div class="grid grid-cols-12 gap-6">
-                            bvdf
+                            @yield('content')
                         </div>
                     </div>
                 </div>
