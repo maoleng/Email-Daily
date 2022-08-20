@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\SendMailController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Middleware\AuthLogin;
 use Illuminate\Support\Facades\Route;
 
@@ -21,9 +22,15 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
     Route::get('/{social}/callback', [SocialLoginController::class, 'callback'])->name('callback');
 });
 
-Route::get('/', function () {
-    return view('app.template.edit');
+Route::group(['prefix' => 'template', 'as' => 'mail.'], static function () {
+    Route::get('/', [TemplateController::class, 'index'])->name('index');
+    Route::get('/create', [TemplateController::class, 'create'])->name('create');
+    Route::get('/edit', [TemplateController::class, 'edit'])->name('edit');
 });
+
+Route::get('/test', function () {
+    return view('app.template.');
+})->name('test');
 Route::get('/send', [SendMailController::class, 'sendMail']);
 
 Route::group(['prefix' => 'social', 'middleware' => AuthLogin::class], static function () {
