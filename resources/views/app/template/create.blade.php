@@ -5,30 +5,32 @@
 @endsection
 
 @section('content')
-    <div class="intro-y col-span-12 lg:col-span-6">
-        <form action="" id="form">
+    <form action="{{route('postok')}}" id="form" method="post" class="intro-y col-span-12 lg:col-span-6">
+        <div class="intro-y col-span-12 lg:col-span-6">
+            @csrf
             <div class="intro-y box p-5">
                 <h2 class="font-medium text-base mr-auto">Nội dung mẫu tin nhắn</h2>
                 <br>
                 <div>
                     <label for="crud-form-1" class="form-label">Tiêu đề</label>
-                    <input id="crud-form-1" type="text" class="form-control form-control-rounded w-full" placeholder="Tiêu đề của mail">
+                    <input id="crud-form-1" type="text" name="title" class="form-control form-control-rounded w-full" placeholder="Tiêu đề của mail">
                 </div>
                 <div class="mt-3">
                     <label for="crud-form-1" class="form-label">Tên người gửi</label>
-                    <input id="crud-form-1" type="text" class="form-control form-control-rounded w-full" placeholder="Tên của người sẽ gửi mail cho bạn">
+                    <input id="crud-form-1" type="text" name="sender" class="form-control form-control-rounded w-full" placeholder="Tên của người sẽ gửi mail cho bạn">
                 </div>
                 <div class="mt-3">
                     <label>Nội dung của mail</label>
                     <div class="mt-2">
-                        <div class="editor" value="a" id="editor">
-                            <p>Xin chào.....</p>
-                        </div>
+                        <textarea name="content" id="myeditorinstance">Hello, World!</textarea>
                     </div>
                 </div>
+                <input type="hidden" name="date" id="date">
+                <input type="hidden" name="time" id="time">
+                <input type="hidden" name="repeat_time" id="repeat_time">
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
     <div class="intro-y col-span-12 lg:col-span-6">
         <div class="intro-y box">
@@ -45,14 +47,9 @@
                         <div class="mt-5">
                             <label>Sẽ tự động gửi vào</label>
                             <div class="mt-2">
-                                <input type="text" class="datepicker w-56 mx-auto" data-single-mode="true">
-                                <input type="time" class="time w-56 mx-auto" value="00:00">
+                                <input id="no_repeat_date" type="text" class="datepicker w-56 mx-auto" data-single-mode="true">
+                                <input id="no_repeat_time" type="time" class="time w-56 mx-auto" value="00:00">
                             </div>
-                        </div>
-
-                        <div class="text-right mt-5">
-                            <button type="button" class="btn btn-outline-secondary w-24 mr-1">Hủy</button>
-                            <button id="button_submit" type="button" class="btn btn-primary w-24">Lưu</button>
                         </div>
                     </div>
 {{--                    ===============--}}
@@ -60,7 +57,7 @@
                         <div class="mt-5">
                             <label>Lặp lại sau mỗi</label>
                             <div class="mt-2">
-                                <select data-placeholder="Select your favorite actors" class="tom-select w-full">
+                                <select id="repeat_queue" data-placeholder="Select your favorite actors" class="tom-select w-full">
                                     <option value="1">2 giờ</option>
                                     <option value="2">4 giờ</option>
                                     <option value="3">6 giờ</option>
@@ -73,34 +70,86 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="text-right mt-5">
-                            <button type="button" class="btn btn-outline-secondary w-24 mr-1">Hủy</button>
-                            <button id="button_submit" type="button" class="btn btn-primary w-24">Lưu</button>
-                        </div>
                     </div>
+                </div>
+                <div class="text-right mt-5">
+                    <button type="button" class="btn btn-outline-secondary w-24 mr-1">Hủy</button>
+                    <button id="button_submit" type="submit" class="btn btn-primary w-24">Lưu</button>
                 </div>
             </div>
         </div>
-
     </div>
 
 
 
 @endsection
 
+
 @section('script')
-    <script src="{{asset('app/js/ckeditor-classic.js')}}"></script>
+
+    <script src="https://cdn.tiny.cloud/1/free/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
+            plugins: 'advcode table checklist image advlist autolink lists link charmap preview codesample imagetool',
+            toolbar: 'insertfile | blocks| bold italic | alignleft aligncenter alignright | image | link | preview | codesample | bullist numlist checklist',
+            menubar: 'insert view',
+            mobile: {
+                menubar: true
+            },
+            setup: function(editor) {
+                editor.on('init', function (e) {
+                    $(".tox-notification__dismiss.tox-button.tox-button--naked.tox-button--icon")[0].click()
+                })
+            },
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input')
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*')
+                input.onchange = function () {
+                    var file = this.files[0];
+                    var reader = new FileReader()
+                    reader.onload = function () {
+                        var id = 'blobid' + (new Date()).getTime()
+                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache
+                        var base64 = reader.result.split(',')[1]
+                        var blobInfo = blobCache.create(id, file, base64)
+                        blobCache.add(blobInfo)
+                        cb(blobInfo.blobUri(), { title: file.name })
+                    }
+                    reader.readAsDataURL(file)
+                }
+                input.click()
+            },
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        });
+    </script>
     <script src="{{asset('app/js/jquery-3.6.0.js')}}"></script>
     <script>
-        $("#toggle-repeat").on('change', function() {
-            if($("#toggle-repeat").is(':checked')) {
-                $("#repeat").css('display', 'none')
-                $("#no-repeat").css('display', 'block')
-            } else {
-                $("#repeat").css('display', 'block')
-                $("#no-repeat").css('display', 'none')
-            }
+        $(document).ready(function () {
+            $("#toggle-repeat").on('change', function() {
+                if($("#toggle-repeat").is(':checked')) {
+                    $("#repeat").css('display', 'none')
+                    $("#no-repeat").css('display', 'block')
+                } else {
+                    $("#repeat").css('display', 'block')
+                    $("#no-repeat").css('display', 'none')
+                }
+            })
+
+            $("#button_submit").on('click', function () {
+                if ($("#toggle-repeat").is(':checked')) {
+                    let repeat_time = $("#repeat_queue").val()
+                    $("#repeat_time").val(repeat_time)
+                } else {
+                    let date = $("#no_repeat_date").val()
+                    let time = $("#no_repeat_time").val()
+                    $("#date").val(date)
+                    $("#time").val(time)
+                }
+                $("#form").submit()
+            })
         })
     </script>
 @endsection

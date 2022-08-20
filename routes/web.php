@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Middleware\AuthLogin;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
@@ -37,3 +38,6 @@ Route::group(['prefix' => 'social', 'middleware' => AuthLogin::class], static fu
     Route::get('/login', [SocialLoginController::class, 'login']);
 
 });
+Route::post('/test123', function (Request $request) {
+    dd($request->all());
+})->name('postok');
