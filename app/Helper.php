@@ -33,13 +33,13 @@ if (!function_exists('plusOneSystemMail')) {
         return true;
     }
 }
-if (!function_exists('getRole')) {
-    function getRole(): string|null
+if (!function_exists('authed')) {
+    function authed()
     {
         $token = session()->get('token');
         if (empty($token)) {
             return null;
         }
-        return c(JWT::class)->match($token)->role;
+        return c(JWT::class)->match($token);
     }
 }

@@ -16,7 +16,7 @@ class IfAlreadyLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        $check = getRole();
+        $check = authed();
         if (isset($check)) {
             return redirect()->route('template.index');
         }

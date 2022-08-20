@@ -58,15 +58,18 @@
                             <label>Lặp lại sau mỗi</label>
                             <div class="mt-2">
                                 <select id="repeat_queue" data-placeholder="Select your favorite actors" class="tom-select w-full">
-                                    <option value="2 giờ">2 giờ</option>
-                                    <option value="4 giờ">4 giờ</option>
-                                    <option value="6 giờ">6 giờ</option>
-                                    <option value="8 giờ">8 giờ</option>
-                                    <option value="12 giờ">12 giờ</option>
-                                    <option value="1 ngày">1 ngày</option>
-                                    <option value="2 ngày">2 ngày</option>
-                                    <option value="3 ngày">3 ngày</option>
-                                    <option value="4 ngày">4 ngày</option>
+                                    <option value="0 */2 * * *">2 giờ</option>
+                                    <option value="0 */4 * * *">4 giờ</option>
+                                    <option value="0 */6 * * *">6 giờ</option>
+                                    <option value="0 */8 * * *">8 giờ</option>
+                                    <option value="0 */12 * * *">12 giờ</option>
+                                    <option value="0 0 */1 * *">1 ngày</option>
+                                    <option value="0 0 */2 * *">2 ngày</option>
+                                    <option value="0 0 */3 * *">3 ngày</option>
+                                    <option value="0 0 */4 * *">4 ngày</option>
+                                    <option value="0 0 */5 * *">5 ngày</option>
+                                    <option value="0 0 */6 * *">6 ngày</option>
+                                    <option value="0 0 */7 * *">7 ngày</option>
                                 </select>
                             </div>
                         </div>
