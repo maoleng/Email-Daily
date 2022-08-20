@@ -58,22 +58,22 @@
                             <label>Lặp lại sau mỗi</label>
                             <div class="mt-2">
                                 <select id="repeat_queue" data-placeholder="Select your favorite actors" class="tom-select w-full">
-                                    <option value="1">2 giờ</option>
-                                    <option value="2">4 giờ</option>
-                                    <option value="3">6 giờ</option>
-                                    <option value="4">8 giờ</option>
-                                    <option value="5">12 giờ</option>
-                                    <option value="7">1 ngày</option>
-                                    <option value="8">2 ngày</option>
-                                    <option value="0">3 ngày</option>
-                                    <option value="45">4 ngày</option>
+                                    <option value="2 giờ">2 giờ</option>
+                                    <option value="4 giờ">4 giờ</option>
+                                    <option value="6 giờ">6 giờ</option>
+                                    <option value="8 giờ">8 giờ</option>
+                                    <option value="12 giờ">12 giờ</option>
+                                    <option value="1 ngày">1 ngày</option>
+                                    <option value="2 ngày">2 ngày</option>
+                                    <option value="3 ngày">3 ngày</option>
+                                    <option value="4 ngày">4 ngày</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="text-right mt-5">
-                    <button type="button" class="btn btn-outline-secondary w-24 mr-1">Hủy</button>
+                    <a href="{{route('template.index')}}" type="button" class="btn btn-outline-secondary w-24 mr-1">Hủy</a>
                     <button id="button_submit" type="submit" class="btn btn-primary w-24">Lưu</button>
                 </div>
             </div>

@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-        <a class="btn btn-primary shadow-md mr-2">Thêm mẫu tin nhắn</a>
+        <a href="{{route('template.create')}}" class="btn btn-primary shadow-md mr-2">Thêm mẫu tin nhắn</a>
         <div class="dropdown">
             <button class="dropdown-toggle btn px-2 box" aria-expanded="false" data-tw-toggle="dropdown">
                         <span class="w-5 h-5 flex items-center justify-center">
