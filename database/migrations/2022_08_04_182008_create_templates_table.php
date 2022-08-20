@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('title', 250);
             $table->longText('content');
             $table->string('sender', 250)->nullable();
-            $table->string('cron_time', 20);
+            $table->string('cron_time', 20)->nullable();
+            $table->date('date')->nullable();
+            $table->time('time')->nullable();
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

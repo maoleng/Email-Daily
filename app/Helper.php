@@ -1,5 +1,6 @@
 <?php
 
+use App\Lib\JWT\JWT;
 use App\Models\Config;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
@@ -32,4 +33,13 @@ if (!function_exists('plusOneSystemMail')) {
         return true;
     }
 }
-
+if (!function_exists('getRole')) {
+    function getRole(): string|null
+    {
+        $token = session()->get('token');
+        if (empty($token)) {
+            return null;
+        }
+        return c(JWT::class)->match($token)->role;
+    }
+}

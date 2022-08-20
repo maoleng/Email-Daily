@@ -11,7 +11,7 @@ class Template extends Base
     use HasFactory;
 
     protected $fillable = [
-        'title', 'content', 'sender', 'cron_time', 'user_id',
+        'title', 'content', 'sender', 'cron_time', 'date', 'time', 'user_id',
     ];
 
     public function user(): BelongsTo

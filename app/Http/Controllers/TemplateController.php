@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Template\StoreRequest;
 use Illuminate\Contracts\View\View;
 
 class TemplateController extends Controller
@@ -19,6 +20,11 @@ class TemplateController extends Controller
     public function edit(): View
     {
         return view('app.template.edit');
+    }
+
+    public function store(StoreRequest $request)
+    {
+
     }
 
 }

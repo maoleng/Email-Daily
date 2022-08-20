@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AuthLogin
+class IfAlreadyLogin
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,9 @@ class AuthLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        $check = (int)getRole();
-        if (empty($check)) {
-            return redirect()->route('auth.login');
+        $check = getRole();
+        if (isset($check)) {
+            return redirect()->route('template.index');
         }
 
         return $next($request);

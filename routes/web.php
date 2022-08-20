@@ -5,10 +5,11 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Middleware\AuthLogin;
+use App\Http\Middleware\IfAlreadyLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
+Route::group(['prefix' => 'auth', 'as' => 'auth.', 'middleware' => [IfAlreadyLogin::class]], static function() {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'processLogin'])->name('process_login');
     Route::get('/forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
@@ -23,11 +24,15 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], static function() {
     Route::get('/{social}/callback', [SocialLoginController::class, 'callback'])->name('callback');
 });
 
-Route::group(['prefix' => 'template', 'as' => 'mail.'], static function () {
-    Route::get('/', [TemplateController::class, 'index'])->name('index');
-    Route::get('/create', [TemplateController::class, 'create'])->name('create');
-    Route::get('/edit', [TemplateController::class, 'edit'])->name('edit');
+Route::group(['middleware' => [AuthLogin::class]], static function () {
+    Route::group(['prefix' => 'template', 'as' => 'template.'], static function () {
+        Route::get('/', [TemplateController::class, 'index'])->name('index');
+        Route::get('/create', [TemplateController::class, 'create'])->name('create');
+        Route::post('/create', [TemplateController::class, 'store'])->name('store');
+        Route::get('/edit', [TemplateController::class, 'edit'])->name('edit');
+    });
 });
+
 
 Route::get('/test', function () {
     return view('app.template.');

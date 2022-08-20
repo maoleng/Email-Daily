@@ -89,9 +89,10 @@ class AuthController extends Controller
             ]);
         }
         $user->update(['active' => true]);
+        $device = (new DeviceController())->createDevice($user, $data['device_id']);
+        session()->put('token', $device->token);
 
-        // TODO: Chuyển hướng login
-        dd('thanh cong, se chuyen huong');
+        return redirect()->route('template.index');
 
     }
 
@@ -116,10 +117,10 @@ class AuthController extends Controller
                 'type' => 'new_location',
             ]);
         }
-        (new DeviceController())->createDevice($user, $data['device_id']);
+        $device = (new DeviceController())->createDevice($user, $data['device_id']);
+        session()->put('token', $device->token);
 
-        // TODO: Chuyển hướng login
-        dd('thanh cong, se chuyen huong');
+        return redirect()->route('template.index');
     }
 
     public function processLogin(LoginRequest $request)
@@ -178,10 +179,10 @@ class AuthController extends Controller
                 'type' => 'register',
             ]);
         }
+        $device = (new DeviceController())->createDevice($user, $data['device_id']);
+        session()->put('token', $device->token);
 
-        // TODO: Chuyển hướng login
-        (new DeviceController())->createDevice($user, $data['device_id']);
-        dd('thanh cong, se chuyen huong');
+        return redirect()->route('template.index');
     }
 
     public function auth($email, $password): array
@@ -308,4 +309,5 @@ class AuthController extends Controller
 
         return false;
     }
+
 }

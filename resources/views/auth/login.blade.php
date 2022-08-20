@@ -50,33 +50,25 @@
 <div class="fxt-style-line">
     <span>Or continue with</span>
 </div>
-<ul class="fxt-socials">
-    <li class="fxt-google">
-        <a href="{{route('auth.redirect', ['social' => 'google'])}}" title="google"><i class="fab fa-google"></i></a>
-    </li>
-    <li class="fxt-github">
-        <a href="{{route('auth.redirect', ['social' => 'github'])}}" title="github"><i class="fab fa-github"></i></a>
-    </li>
-    <li class="fxt-gitlab">
-        <a href="{{route('auth.redirect', ['social' => 'gitlab'])}}" title="gitlab"><i class="fab fa-gitlab"></i></a>
-    </li>
-    <li class="fxt-linkedin">
-        <a href="{{route('auth.redirect', ['social' => 'linkedin'])}}" title="linkedin"><i class="fab fa-linkedin"></i></a>
-    </li>
-    <li class="fxt-facebook">
-        <a href="{{route('auth.redirect', ['social' => 'facebook'])}}" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-    </li>
-    <li class="fxt-twitter">
-        <a href="{{route('auth.redirect', ['social' => 'twitter'])}}" title="Twitter"><i class="fab fa-twitter"></i></a>
-    </li>
-</ul>
+@include('auth.socials')
+
 @endsection
 
 @section('script')
     <script src="{{asset('js/device-uuid.js')}}"></script>
     <script>
-        let device_id = new DeviceUUID().get()
-        $('#device_id').val(device_id)
+        $(document).ready(function() {
+            let device_id = new DeviceUUID().get()
+            $('#device_id').val(device_id)
+
+            $("li.fxt").on('click', function() {
+                let type = this.className.split('-')[1]
+                let input_device_id = "#form_" + type + "> input"
+                $(input_device_id).val(device_id)
+                $("#form_" + type).submit()
+            })
+        })
+
     </script>
 @endsection
 
