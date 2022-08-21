@@ -15,6 +15,10 @@ use App\Console\Commands\QueueMailDay6;
 use App\Console\Commands\QueueMailHour6;
 use App\Console\Commands\QueueMailDay7;
 use App\Console\Commands\QueueMailHour8;
+use App\Jobs\JobSendMails;
+use App\Mail\TemplateMail;
+use App\Models\Template;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -60,6 +64,25 @@ class Kernel extends ConsoleKernel
         $schedule->command(QueueMailDay5::COMMAND)->cron(QueueMailDay5::CRON_TIME);
         $schedule->command(QueueMailDay6::COMMAND)->cron(QueueMailDay6::CRON_TIME);
         $schedule->command(QueueMailDay7::COMMAND)->cron(QueueMailDay7::CRON_TIME);
+
+
+        $templates = Template::query()->whereNull('cron_time')->where('active', true)
+            ->with('user')->get();
+        foreach ($templates as $template) {
+            $time = Carbon::create($template->date . ' ' . $template->time);
+            $schedule->call(static function () use ($template) {
+                $template_mail = new TemplateMail($template);
+                $domain = explode('@', $template->user->email)[1];
+                if ($domain === 'student.tdtu.edu.vn') {
+                    $job_send_mail = new JobSendMails($template_mail, 'school', $template);
+                } else {
+                    $job_send_mail = new JobSendMails($template_mail, 'normal', $template);
+                }
+                dispatch($job_send_mail);
+            })->when(function () use ($time) {
+                return $time->toDateTimeString() === now()->seconds(0)->toDateTimeString();
+            });
+        }
     }
 
     /**
