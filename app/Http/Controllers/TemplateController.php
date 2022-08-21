@@ -9,6 +9,7 @@ use App\Mail\TemplateMail;
 use App\Models\Template;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 
 class TemplateController extends Controller
@@ -57,7 +58,12 @@ class TemplateController extends Controller
 
     public function update(UpdateRequest $request, Template $template): RedirectResponse
     {
-        $template->update([$request->validated()]);
+        $data = $request->validated();
+        if (isset($data['date'], $data['time'])) {
+            $data['date'] = Carbon::make($data['date'])->toDateString();
+            $data['time'] = Carbon::make($data['time'])->toTimeString();
+        }
+        $template->update($data);
 
         return redirect()->route('template.index');
     }

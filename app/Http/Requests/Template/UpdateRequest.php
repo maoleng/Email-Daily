@@ -24,13 +24,13 @@ class UpdateRequest extends BaseRequest
             'time' => [
                 'nullable'
             ],
-            'repeat_time' => [
+            'cron_time' => [
                 'nullable',
                 function ($attribute, $value, $fail) {
                     if (
-                        (empty($this->repeat_time) && empty($this->time) && empty($this->date)) ||
-                        (empty($this->repeat_time) && empty($this->date)) ||
-                        (empty($this->repeat_time) && empty($this->time))
+                        (empty($this->cron_time) && empty($this->time) && empty($this->date)) ||
+                        (empty($this->cron_time) && empty($this->date)) ||
+                        (empty($this->cron_time) && empty($this->time))
                     ) {
                         return $fail('Thời gian không hợp lệ');
                     }

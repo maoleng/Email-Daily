@@ -28,7 +28,7 @@
                 </div>
                 <input type="hidden" name="date" id="date">
                 <input type="hidden" name="time" id="time">
-                <input type="hidden" name="repeat_time" id="repeat_time">
+                <input type="hidden" name="cron_time" id="repeat_time">
             </div>
         </div>
     </form>
