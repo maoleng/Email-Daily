@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="{{route('postok')}}" id="form" method="post" class="intro-y col-span-12 lg:col-span-6">
+    <form action="{{route('template.create')}}" id="form" method="post" class="intro-y col-span-12 lg:col-span-6">
         <div class="intro-y col-span-12 lg:col-span-6">
             @csrf
             <div class="intro-y box p-5">
@@ -59,6 +59,7 @@
                             <div class="mt-2">
                                 <select id="repeat_queue" data-placeholder="Select your favorite actors" class="tom-select w-full">
                                     <option value="0 */2 * * *">2 giờ</option>
+                                    <option value="0 */3 * * *">3 giờ</option>
                                     <option value="0 */4 * * *">4 giờ</option>
                                     <option value="0 */6 * * *">6 giờ</option>
                                     <option value="0 */8 * * *">8 giờ</option>

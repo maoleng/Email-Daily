@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Template\StoreRequest;
+use App\Jobs\JobSendMails;
+use App\Mail\TemplateMail;
 use App\Models\Template;
 use Illuminate\Contracts\View\View;
 
@@ -36,6 +38,25 @@ class TemplateController extends Controller
             'time' => $data['time'] ?? null,
             'user_id' => authed()->id,
         ]);
+
+    }
+
+    public function queueMail($cron): void
+    {
+        $templates = Template::query()
+            ->where('cron_time', $cron)
+            ->with('user')
+            ->get();
+        foreach ($templates as $template) {
+            $template_mail = new TemplateMail($template);
+            $domain = explode('@', $template->user->email)[1];
+            if ($domain === 'student.tdtu.edu.vn') {
+                $job_send_mail = new JobSendMails($template_mail, 'school', $template);
+            } else {
+                $job_send_mail = new JobSendMails($template_mail, 'normal', $template);
+            }
+            dispatch($job_send_mail);
+        }
     }
 
 }
