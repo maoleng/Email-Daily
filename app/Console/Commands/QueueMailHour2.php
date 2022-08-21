@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class QueueMailHour2 extends Command
 {
-    public const CRON_TIME = '* */2 * * *';
+    public const CRON_TIME = '0 */2 * * *';
     public const COMMAND = 'command:queue_mail_2_hours';
 
     protected $signature = self::COMMAND;
