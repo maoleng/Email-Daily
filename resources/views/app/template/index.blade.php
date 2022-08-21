@@ -58,26 +58,29 @@
 
                     </div>
                     <div class="flex items-center mt-2">
-{{--                        @if ($template->nextQueueTime === 'Đã g')stop-circle--}}
-                        <svg height="24" width="24" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2">
-                            <defs>
-                                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
-                                    <stop stop-color="rgb(30, 41, 59)" stop-opacity="0" offset="0%"></stop>
-                                    <stop stop-color="rgb(30, 41, 59)" stop-opacity=".631" offset="63.146%"></stop>
-                                    <stop stop-color="rgb(30, 41, 59)" offset="100%"></stop>
-                                </linearGradient>
-                            </defs>
-                            <g fill="none" fill-rule="evenodd">
-                                <g transform="translate(1 1)">
-                                    <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="3">
-                                        <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="0.9s" repeatCount="indefinite"></animateTransform>
-                                    </path>
-                                    <circle fill="rgb(30, 41, 59)" cx="36" cy="18" r="1">
-                                        <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="0.9s" repeatCount="indefinite"></animateTransform>
-                                    </circle>
+                        @if ($template->active === true)
+                            <svg height="24" width="24" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2">
+                                <defs>
+                                    <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                                        <stop stop-color="rgb(30, 41, 59)" stop-opacity="0" offset="0%"></stop>
+                                        <stop stop-color="rgb(30, 41, 59)" stop-opacity=".631" offset="63.146%"></stop>
+                                        <stop stop-color="rgb(30, 41, 59)" offset="100%"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <g fill="none" fill-rule="evenodd">
+                                    <g transform="translate(1 1)">
+                                        <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="3">
+                                            <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="0.9s" repeatCount="indefinite"></animateTransform>
+                                        </path>
+                                        <circle fill="rgb(30, 41, 59)" cx="36" cy="18" r="1">
+                                            <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="0.9s" repeatCount="indefinite"></animateTransform>
+                                        </circle>
+                                    </g>
                                 </g>
-                            </g>
-                        </svg>
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="stop-circle" data-lucide="stop-circle" class="lucide lucide-stop-circle w-4 h-4 mr-2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path></svg>
+                        @endif
                         Trạng thái: {{$template->nextQueueTime}}
                     </div>
                     <div class="flex items-center mt-2">
