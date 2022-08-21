@@ -76,4 +76,9 @@ class Template extends Base
 
         return 'Sẽ gửi trong ' . $next_queue->longRelativeDiffForHumans(now()->format('Y'));
     }
+
+    public function getId2Attribute(): string
+    {
+        return substr($this->id, 0, 5);
+    }
 }

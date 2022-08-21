@@ -99,4 +99,11 @@ class TemplateController extends Controller
         return redirect()->route('template.index');
     }
 
+    public function destroy(Template $template): RedirectResponse
+    {
+        $template->delete();
+
+        return redirect()->route('template.index');
+    }
+
 }
