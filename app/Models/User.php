@@ -18,6 +18,10 @@ class User extends Base
         'facebook_id', 'google_id', 'github_id', 'gitlab_id', 'twitter_id', 'linkedin_id',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
     protected $casts = [
         'active' => 'boolean',
     ];
@@ -40,5 +44,19 @@ class User extends Base
     public function templates(): HasMany
     {
         return $this->hasMany(Template::class, 'user_id', 'id');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::created(static function ($model) {
+            Setting::query()->create([
+                'key' => 'theme',
+                'value' => 'light',
+                'user_id' => $model->id,
+            ]);
+        });
+
     }
 }

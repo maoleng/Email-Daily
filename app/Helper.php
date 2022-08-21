@@ -2,6 +2,7 @@
 
 use App\Lib\JWT\JWT;
 use App\Models\Config;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
@@ -43,3 +44,14 @@ if (!function_exists('authed')) {
         return c(JWT::class)->match($token);
     }
 }
+if (!function_exists('getSettings')) {
+    function isDarkMode(): bool
+    {
+        return !empty(Setting::query()
+            ->where('user_id', authed()->id)
+            ->where('key', 'theme')
+            ->where('value', 'dark')
+            ->first());
+    }
+}
+

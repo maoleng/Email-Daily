@@ -145,7 +145,6 @@
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
         });
     </script>
-    <script src="{{asset('app/js/jquery-3.6.0.js')}}"></script>
     <script>
         $(document).ready(function () {
             $("#toggle-repeat").on('change', function() {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\SendMailController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Middleware\AuthLogin;
 use App\Http\Middleware\IfAlreadyLogin;
@@ -36,12 +37,13 @@ Route::group(['middleware' => [AuthLogin::class]], static function () {
         Route::put('/toggle_active/{template}', [TemplateController::class, 'toggleActive'])->name('toggle_active');
         Route::delete('/{template}', [TemplateController::class, 'destroy'])->name('destroy');
     });
-});
+    Route::group(['prefix' => 'setting', 'as' => 'setting.'], static function () {
+        Route::put('/update', [SettingController::class, 'update'])->name('update');
+    });});
 
 
 Route::get('/test', function () {
-    $cron = new Cron\CronExpression('0 */4 * * *');
-    dd( $cron->getNextRunDate()->format('Y-m-d H:i:s'));
+    dd(authed()->user);
 })->name('test');
 Route::get('/send', [SendMailController::class, 'sendMail']);
 

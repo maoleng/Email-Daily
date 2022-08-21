@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light theme">
+<html lang="en" class="@if(isDarkMode()) dark @else light @endif theme">
     @include('app-theme.page')
 
     <body class="py-5">
@@ -18,6 +18,26 @@
         </div>
 
     <script src="{{asset('app/js/app.js')}}"></script>
+    <script src="{{asset('app/js/jquery-3.6.0.js')}}"></script>
+    <script>
+        let theme =
+        $("#toggle-theme").click(function () {
+            let theme = $("#toggle-theme").is(':checked') ? 'dark' : 'light'
+            $.ajax({
+                type:'PUT',
+                url:'{{route('setting.update')}}',
+                data: {
+                    _token: "{{csrf_token()}}",
+                    user_id: "{{authed()->id}}",
+                    key: 'theme',
+                    value: theme,
+                },
+                success:function(data) {
+                    window.location.reload()
+                }
+            });
+        })
+    </script>
     @yield('script')
     </body>
 </html>

@@ -16,6 +16,7 @@ class TemplateController extends Controller
     public function __construct()
     {
         View::share('menu', 'Mẫu tin nhắn');
+        View::share('route', 'template.index');
     }
 
     public function index(): ViewReturn

@@ -142,7 +142,6 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('app/js/jquery-3.6.0.js')}}"></script>
     <script>
         $(document).ready(function () {
             $(".form-toggle-active").click(function () {

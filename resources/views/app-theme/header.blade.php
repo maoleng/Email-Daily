@@ -2,7 +2,7 @@
 
     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">{{$menu}}</a></li>
+            <li class="breadcrumb-item"><a href="{{route($route)}}">{{$menu}}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{$breadcrumb}}</li>
         </ol>
     </nav>
@@ -25,7 +25,7 @@
 
     <div class="intro-x relative mr-3 sm:mr-6">
         <div class="form-check form-switch">
-            <input id="checkbox-switch-7" class="form-check-input" type="checkbox">
+            <input @if(isDarkMode()) checked @endif id="toggle-theme" class="form-check-input" type="checkbox">
             <label class="form-check-label" for="checkbox-switch-7">Chế độ tối</label>
         </div>
     </div>

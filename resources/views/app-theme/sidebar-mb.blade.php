@@ -1,6 +1,6 @@
 <div class="mobile-menu md:hidden">
     <div class="mobile-menu-bar">
-        <a href="" class="flex mr-auto">
+        <a href="{{route('template.index')}}" class="flex mr-auto">
             <img alt="Mao Leng" class="w-6" src="{{asset('app/images/logo.png')}}" style="width:40px">
         </a>
         <a href="javascript:;" class="mobile-menu-toggler">
@@ -8,7 +8,7 @@
         </a>
     </div>
     <div class="scrollable">
-        <a href="javascript:;" class="mobile-menu-toggler">
+        <a href="{{route('template.index')}}" class="mobile-menu-toggler">
             <i data-lucide="x-circle" class="w-8 h-8 text-white transform -rotate-90"></i>
         </a>
         <ul class="scrollable__content py-2">
