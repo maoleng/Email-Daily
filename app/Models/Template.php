@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,5 +49,14 @@ class Template extends Base
             '0 0 */6 * *' => 'Mỗi 6 ngày',
             '0 0 */7 * *' => 'Mỗi 7 ngày',
         };
+    }
+
+    public function getNextQueueTimeAttribute(): string
+    {
+        Carbon::setLocale('vi');
+        $cron = new CronExpression($this->cron_time);
+        $next_queue = $cron->getNextRunDate()->format('Y-m-d H:i:s');
+
+        return Carbon::make($next_queue)->longRelativeDiffForHumans(now()->format('Y'));
     }
 }

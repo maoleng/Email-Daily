@@ -35,7 +35,8 @@ Route::group(['middleware' => [AuthLogin::class]], static function () {
 
 
 Route::get('/test', function () {
-    return view('app.template.');
+    $cron = new Cron\CronExpression('0 */4 * * *');
+    dd( $cron->getNextRunDate()->format('Y-m-d H:i:s'));
 })->name('test');
 Route::get('/send', [SendMailController::class, 'sendMail']);
 
