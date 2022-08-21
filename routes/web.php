@@ -29,7 +29,8 @@ Route::group(['middleware' => [AuthLogin::class]], static function () {
         Route::get('/', [TemplateController::class, 'index'])->name('index');
         Route::get('/create', [TemplateController::class, 'create'])->name('create');
         Route::post('/create', [TemplateController::class, 'store'])->name('store');
-        Route::get('/edit', [TemplateController::class, 'edit'])->name('edit');
+        Route::get('/edit/{template}', [TemplateController::class, 'edit'])->name('edit');
+        Route::put('/update/{template}', [TemplateController::class, 'update'])->name('update');
     });
 });
 

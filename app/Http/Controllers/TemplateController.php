@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Template\StoreRequest;
+use App\Http\Requests\Template\UpdateRequest;
 use App\Jobs\JobSendMails;
 use App\Mail\TemplateMail;
 use App\Models\Template;
@@ -26,9 +27,11 @@ class TemplateController extends Controller
         return view('app.template.create');
     }
 
-    public function edit(): View
+    public function edit(Template $template): View
     {
-        return view('app.template.edit');
+        return view('app.template.edit', [
+            'template' => $template
+        ]);
     }
 
     public function store(StoreRequest $request): RedirectResponse
@@ -48,6 +51,13 @@ class TemplateController extends Controller
             'banner' => Template::BANNER,
             'user_id' => authed()->id,
         ]);
+
+        return redirect()->route('template.index');
+    }
+
+    public function update(UpdateRequest $request, Template $template): RedirectResponse
+    {
+        $template->update([$request->validated()]);
 
         return redirect()->route('template.index');
     }

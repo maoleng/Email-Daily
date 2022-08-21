@@ -50,13 +50,25 @@ class Template extends Base
             '0 0 */7 * *' => 'Mỗi 7 ngày',
         };
     }
+    public function getDateTimeAttribute(): string
+    {
+        return Carbon::make($this->date . ' ' . $this->time)->format('d-m-Y H:i:s');
+    }
 
     public function getNextQueueTimeAttribute(): string
     {
         Carbon::setLocale('vi');
-        $cron = new CronExpression($this->cron_time);
-        $next_queue = $cron->getNextRunDate()->format('Y-m-d H:i:s');
+        if (isset($this->cron_time)) {
+            $cron = new CronExpression($this->cron_time);
+            $next_queue_time = $cron->getNextRunDate()->format('Y-m-d H:i:s');
+            $next_queue = Carbon::make($next_queue_time);
+        } else {
+            $next_queue = Carbon::make($this->date . ' ' . $this->time);
+            if ($next_queue->lt(now())) {
+                return 'Đã gửi';
+            }
+        }
 
-        return Carbon::make($next_queue)->longRelativeDiffForHumans(now()->format('Y'));
+        return 'Sẽ gửi trong ' . $next_queue->longRelativeDiffForHumans(now()->format('Y'));
     }
 }

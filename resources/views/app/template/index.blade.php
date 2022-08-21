@@ -53,9 +53,12 @@
                 <div class="text-slate-600 dark:text-slate-500 mt-5">
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="link" data-lucide="link" class="lucide lucide-link w-4 h-4 mr-2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path></svg>
-                        Thời gian: {{$template->beautifulCronTime}}
+                        Thời gian:
+                        @if (isset($template->cron_time)) {{$template->beautifulCronTime}} @else {{$template->dateTime}} @endif
+
                     </div>
                     <div class="flex items-center mt-2">
+{{--                        @if ($template->nextQueueTime === 'Đã g')stop-circle--}}
                         <svg height="24" width="24" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2">
                             <defs>
                                 <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
@@ -75,7 +78,7 @@
                                 </g>
                             </g>
                         </svg>
-                        Trạng thái: Sẽ gửi trong {{$template->nextQueueTime}}
+                        Trạng thái: {{$template->nextQueueTime}}
                     </div>
                     <div class="flex items-center mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="check-square" data-lucide="check-square" class="lucide lucide-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
@@ -84,11 +87,11 @@
                 </div>
             </div>
             <div class="flex justify-center lg:justify-end items-center p-5 border-t border-slate-200/60 dark:border-darkmode-400">
-                <a class="flex items-center text-primary mr-auto" href="javascript:;">
+                <a  class="flex items-center text-primary mr-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="pause" data-lucide="pause" class="lucide lucide-pause w-4 h-4 mr-1"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
                     Dừng
                 </a>
-                <a class="flex items-center mr-3" href="javascript:;">
+                <a href="{{route('template.edit', ['template' => $template])}}" class="flex items-center mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="check-square" data-lucide="check-square" class="lucide lucide-check-square w-4 h-4 mr-1"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
                     Sửa
                 </a>
