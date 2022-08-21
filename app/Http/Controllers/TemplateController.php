@@ -6,13 +6,19 @@ use App\Http\Requests\Template\StoreRequest;
 use App\Jobs\JobSendMails;
 use App\Mail\TemplateMail;
 use App\Models\Template;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TemplateController extends Controller
 {
     public function index(): View
     {
-        return view('app.template.index');
+        $templates = Template::query()->where('user_id', authed()->id)->get();
+
+        return view('app.template.index', [
+            'templates' => $templates
+        ]);
     }
 
     public function create(): View
@@ -25,26 +31,32 @@ class TemplateController extends Controller
         return view('app.template.edit');
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         $data = $request->all();
-
+        if (isset($data['date'], $data['time'])) {
+            $date = Carbon::make($data['date'])->toDateString();
+            $time = Carbon::make($data['time'])->toTimeString();
+        }
         Template::query()->create([
             'title' => $data['title'],
             'content' => $data['content'],
             'sender' => $data['sender'],
             'cron_time' => $data['repeat_time'] ?? null,
-            'date' => $data['date'] ?? null,
-            'time' => $data['time'] ?? null,
+            'date' => $date ?? null,
+            'time' => $time ?? null,
+            'banner' => Template::BANNER,
             'user_id' => authed()->id,
         ]);
 
+        return redirect()->route('template.index');
     }
 
     public function queueMail($cron): void
     {
         $templates = Template::query()
             ->where('cron_time', $cron)
+            ->where('active', true)
             ->with('user')
             ->get();
         foreach ($templates as $template) {

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('cron_time', 20)->nullable();
             $table->date('date')->nullable();
             $table->time('time')->nullable();
+            $table->text('banner');
+            $table->boolean('active')->default(1);
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
