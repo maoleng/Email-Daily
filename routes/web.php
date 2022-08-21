@@ -9,6 +9,9 @@ use App\Http\Middleware\AuthLogin;
 use App\Http\Middleware\IfAlreadyLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+Route::get('/', static function () {
+    return redirect()->route('auth.login');
+});
 
 Route::group(['prefix' => 'auth', 'as' => 'auth.', 'middleware' => [IfAlreadyLogin::class]], static function() {
 
