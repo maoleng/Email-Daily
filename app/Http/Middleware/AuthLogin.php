@@ -16,7 +16,7 @@ class AuthLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        $check = authed()->role;
+        $check = authed();
         if (empty($check)) {
             return redirect()->route('auth.login');
         }
