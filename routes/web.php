@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth', 'as' => 'auth.', 'middleware' => [IfAlreadyLogin::class]], static function() {
+
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'processLogin'])->name('process_login');
     Route::get('/forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
@@ -23,6 +24,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.', 'middleware' => [IfAlreadyLog
     Route::get('/{social}/redirect', [SocialLoginController::class, 'redirect'])->name('redirect');
     Route::get('/{social}/callback', [SocialLoginController::class, 'callback'])->name('callback');
 });
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::group(['middleware' => [AuthLogin::class]], static function () {
     Route::group(['prefix' => 'template', 'as' => 'template.'], static function () {

@@ -18,6 +18,7 @@ class DeviceController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
+            'avatar' => $user->avatar,
         ]);
     }
 

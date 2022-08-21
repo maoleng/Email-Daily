@@ -3,42 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Template\StoreRequest;
-use App\Http\Requests\Template\UpdateRequest;
 use App\Jobs\JobSendMails;
 use App\Mail\TemplateMail;
 use App\Models\Template;
 use Carbon\Carbon;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\View\View as ViewReturn;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\View;
 
 class TemplateController extends Controller
 {
-    public function index(): View
+    public function __construct()
+    {
+        View::share('menu', 'Mẫu tin nhắn');
+    }
+
+    public function index(): ViewReturn
     {
         $templates = Template::query()->where('user_id', authed()->id)->get();
 
         return view('app.template.index', [
-            'templates' => $templates
+            'templates' => $templates,
+            'breadcrumb' => 'Trang chủ'
         ]);
     }
 
-    public function create(): View
+    public function create(): ViewReturn
     {
-        return view('app.template.create');
+        return view('app.template.create', [
+            'breadcrumb' => 'Thêm',
+        ]);
     }
 
-    public function edit(Template $template): View
+    public function edit(Template $template): ViewReturn
     {
         return view('app.template.edit', [
-            'template' => $template
+            'template' => $template,
+            'breadcrumb' => 'Chỉnh sửa'
         ]);
     }
 
     public function store(StoreRequest $request): RedirectResponse
     {
         $data = $request->all();
-        dd($data);
         if (isset($data['date'], $data['time'])) {
             $date = Carbon::make($data['date'])->toDateString();
             $time = Carbon::make($data['time'])->toTimeString();

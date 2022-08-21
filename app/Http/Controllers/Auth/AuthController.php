@@ -310,4 +310,13 @@ class AuthController extends Controller
         return false;
     }
 
+    public function logout(): RedirectResponse
+    {
+        session()->forget('token');
+        session()->flush();
+        session()->save();
+        
+        return redirect()->route('auth.login');
+    }
+
 }

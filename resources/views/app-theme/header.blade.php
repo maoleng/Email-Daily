@@ -2,15 +2,15 @@
 
     <nav aria-label="breadcrumb" class="-intro-x mr-auto hidden sm:flex">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Application</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            <li class="breadcrumb-item"><a href="#">{{$menu}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{$breadcrumb}}</li>
         </ol>
     </nav>
 
 
     <div class="intro-x relative mr-3 sm:mr-6">
         <div class="search hidden sm:block">
-            <input type="text" class="search__input form-control border-transparent" placeholder="Search...">
+            <input type="text" class="search__input form-control border-transparent" placeholder="Không tìm kiếm được đâu...">
             <i data-lucide="search" class="search__icon dark:text-slate-500"></i>
         </div>
         <a class="notification sm:hidden" href="">
@@ -26,50 +26,49 @@
     <div class="intro-x relative mr-3 sm:mr-6">
         <div class="form-check form-switch">
             <input id="checkbox-switch-7" class="form-check-input" type="checkbox">
-            <label class="form-check-label" for="checkbox-switch-7">Dark Mode</label>
+            <label class="form-check-label" for="checkbox-switch-7">Chế độ tối</label>
         </div>
     </div>
 
 
     <div class="intro-x dropdown w-8 h-8">
         <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-            <img alt="Midone - HTML Admin Template" src="{{asset('app/images/profile-7.jpg')}}">
+            <img alt="Midone - HTML Admin Template" src="{{authed()->avatar}}">
         </div>
         <div class="dropdown-menu w-56">
             <ul class="dropdown-content bg-primary text-white">
                 <li class="p-2">
-                    <div class="font-medium">Denzel Washington</div>
-                    <div class="text-xs text-white/70 mt-0.5 dark:text-slate-500">Software Engineer</div>
+                    <div class="font-medium">{{authed()->name}}</div>
                 </li>
                 <li>
                     <hr class="dropdown-divider border-white/[0.08]">
                 </li>
                 <li>
                     <a href="" class="dropdown-item hover:bg-white/5">
-                        <i data-lucide="user" class="w-4 h-4 mr-2"></i> Profile
+                        <i data-lucide="user" class="w-4 h-4 mr-2"></i> Trang cá nhân
                     </a>
                 </li>
-                <li>
-                    <a href="" class="dropdown-item hover:bg-white/5">
-                        <i data-lucide="edit" class="w-4 h-4 mr-2"></i> Add Account
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="dropdown-item hover:bg-white/5">
-                        <i data-lucide="lock" class="w-4 h-4 mr-2"></i> Reset Password
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="dropdown-item hover:bg-white/5">
-                        <i data-lucide="help-circle" class="w-4 h-4 mr-2"></i> Help
-                    </a>
-                </li>
+{{--                <li>--}}
+{{--                    <a href="" class="dropdown-item hover:bg-white/5">--}}
+{{--                        <i data-lucide="edit" class="w-4 h-4 mr-2"></i> Add Account--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li>--}}
+{{--                    <a href="" class="dropdown-item hover:bg-white/5">--}}
+{{--                        <i data-lucide="lock" class="w-4 h-4 mr-2"></i> Reset Password--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li>--}}
+{{--                    <a href="" class="dropdown-item hover:bg-white/5">--}}
+{{--                        <i data-lucide="help-circle" class="w-4 h-4 mr-2"></i> Help--}}
+{{--                    </a>--}}
+{{--                </li>--}}
                 <li>
                     <hr class="dropdown-divider border-white/[0.08]">
                 </li>
                 <li>
-                    <a href="" class="dropdown-item hover:bg-white/5">
-                        <i data-lucide="toggle-right" class="w-4 h-4 mr-2"></i> Logout
+                    <a href="{{route('auth.logout')}}" class="dropdown-item hover:bg-white/5">
+                        <i data-lucide="toggle-right" class="w-4 h-4 mr-2"></i> Đăng xuất
                     </a>
                 </li>
             </ul>
