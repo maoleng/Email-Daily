@@ -48,7 +48,13 @@
                             <label>Sẽ tự động gửi vào</label>
                             <div class="mt-2">
                                 <input id="no_repeat_date" type="text" class="datepicker w-56 mx-auto" data-single-mode="true">
-                                <input id="no_repeat_time" type="time" class="time w-56 mx-auto" value="00:00">
+                                <select id="no_repeat_time" data-placeholder="Chọn giờ" class="tom-select w-full mt-5">
+                                    @for($i = 0; $i <= 23; $i++)
+                                        @if ($i < 10)<option value="0{{$i}}:00">{{$i}} giờ</option>
+                                        @else<option value="{{$i}}:00">{{$i}} giờ</option>
+                                        @endif
+                                    @endfor
+                                </select>
                             </div>
                         </div>
                     </div>

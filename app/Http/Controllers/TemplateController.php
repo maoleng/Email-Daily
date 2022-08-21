@@ -20,7 +20,7 @@ class TemplateController extends Controller
 
     public function index(): ViewReturn
     {
-        $templates = Template::query()->where('user_id', authed()->id)->get();
+        $templates = Template::query()->where('user_id', authed()->id)->orderBy('created_at', 'DESC')->get();
 
         return view('app.template.index', [
             'templates' => $templates,
