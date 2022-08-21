@@ -31,6 +31,7 @@ Route::group(['middleware' => [AuthLogin::class]], static function () {
         Route::post('/create', [TemplateController::class, 'store'])->name('store');
         Route::get('/edit/{template}', [TemplateController::class, 'edit'])->name('edit');
         Route::put('/update/{template}', [TemplateController::class, 'update'])->name('update');
+        Route::put('/toggle_active/{template}', [TemplateController::class, 'toggleActive'])->name('toggle_active');
     });
 });
 

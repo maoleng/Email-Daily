@@ -38,6 +38,7 @@ class TemplateController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         $data = $request->all();
+        dd($data);
         if (isset($data['date'], $data['time'])) {
             $date = Carbon::make($data['date'])->toDateString();
             $time = Carbon::make($data['time'])->toTimeString();
@@ -56,7 +57,7 @@ class TemplateController extends Controller
         return redirect()->route('template.index');
     }
 
-    public function update(UpdateRequest $request, Template $template): RedirectResponse
+    public function update(StoreRequest $request, Template $template): RedirectResponse
     {
         $data = $request->validated();
         if (isset($data['date'], $data['time'])) {
@@ -87,11 +88,15 @@ class TemplateController extends Controller
         }
     }
 
+    public function toggleActive(Template $template): RedirectResponse
+    {
+        if ($template->active === true) {
+            $template->update(['active' => false]);
+        } else {
+            $template->update(['active' => true]);
+        }
+
+        return redirect()->route('template.index');
+    }
+
 }
-
-
-
-
-
-
-

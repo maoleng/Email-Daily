@@ -17,7 +17,13 @@ class StoreRequest extends BaseRequest
                 'required',
             ],
             'content' => [
-                'required'
+                'required',
+                function ($attribute, $value, $fail) {
+                    $content_size = strlen($value);
+                    if ($content_size > 20000000) {
+                        return $fail('Nội dung quá lớn');
+                    }
+                },
             ],
             'date' => [
                 'nullable'
@@ -29,9 +35,9 @@ class StoreRequest extends BaseRequest
                 'nullable',
                 function ($attribute, $value, $fail) {
                     if (
-                        (empty($this->cront_time) && empty($this->time) && empty($this->date)) ||
-                        (empty($this->cront_time) && empty($this->date)) ||
-                        (empty($this->cront_time) && empty($this->time))
+                        (empty($attribute) && empty($this->time) && empty($this->date)) ||
+                        (empty($attribute) && empty($this->date)) ||
+                        (empty($attribute) && empty($this->time))
                     ) {
                         return $fail('Thời gian không hợp lệ');
                     }

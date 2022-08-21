@@ -103,7 +103,15 @@
         </div>
     </div>
 
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 @endsection
 
@@ -113,9 +121,10 @@
     <script src="https://cdn.tiny.cloud/1/free/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-            selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
-            plugins: 'advcode table checklist image advlist autolink lists link charmap preview codesample imagetool',
-            toolbar: 'insertfile | blocks| bold italic | alignleft aligncenter alignright | image | link | preview | codesample | bullist numlist checklist',
+            selector: 'textarea#myeditorinstance',
+            height: 270,
+            plugins: 'advcode table checklist image advlist autolink lists link charmap preview codesample imagetool fullscreen',
+            toolbar: 'insertfile | blocks| bold italic | fullscreen | image | link | preview | codesample | bullist numlist checklist |  alignleft aligncenter alignright',
             menubar: 'insert view',
             mobile: {
                 menubar: true
@@ -151,11 +160,7 @@
     <script src="{{asset('app/js/jquery-3.6.0.js')}}"></script>
     <script>
         $(document).ready(function () {
-            @if (isset($template->cron_time))
-                $("#toggle-repeat").click()
-                $("#repeat").css('display', 'none')
-                $("#no-repeat").css('display', 'block')
-            @endif
+
 
             $("#toggle-repeat").on('change', function() {
                 if($("#toggle-repeat").is(':checked')) {
@@ -167,16 +172,24 @@
                 }
             })
 
+            @if (isset($template->cron_time))
+                $("#toggle-repeat").click()
+            @endif
+
             $("#button_submit").on('click', function () {
                 if ($("#toggle-repeat").is(':checked')) {
                     let repeat_time = $("#repeat_queue").val()
+                    $("#date").val(null)
+                    $("#time").val(null)
                     $("#repeat_time").val(repeat_time)
                 } else {
                     let date = $("#no_repeat_date").val()
                     let time = $("#no_repeat_time").val()
                     $("#date").val(date)
                     $("#time").val(time)
+                    $("#repeat_time").val(null)
                 }
+
                 $("#form").submit()
             })
         })

@@ -58,6 +58,7 @@ class Template extends Base
     public function getNextQueueTimeAttribute(): string
     {
         Carbon::setLocale('vi');
+
         if (isset($this->cron_time)) {
             $cron = new CronExpression($this->cron_time);
             $next_queue_time = $cron->getNextRunDate()->format('Y-m-d H:i:s');
@@ -67,6 +68,10 @@ class Template extends Base
             if ($next_queue->lt(now())) {
                 return 'Đã gửi';
             }
+        }
+
+        if ($this->active === false) {
+            return 'Không hoạt động';
         }
 
         return 'Sẽ gửi trong ' . $next_queue->longRelativeDiffForHumans(now()->format('Y'));

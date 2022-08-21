@@ -85,6 +85,15 @@
     </div>
 
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 @endsection
 
@@ -94,9 +103,10 @@
     <script src="https://cdn.tiny.cloud/1/free/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-            selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
-            plugins: 'advcode table checklist image advlist autolink lists link charmap preview codesample imagetool',
-            toolbar: 'insertfile | blocks| bold italic | alignleft aligncenter alignright | image | link | preview | codesample | bullist numlist checklist',
+            selector: 'textarea#myeditorinstance',
+            height: 270,
+            plugins: 'advcode table checklist image advlist autolink lists link charmap preview codesample imagetool fullscreen',
+            toolbar: 'insertfile | blocks| bold italic | fullscreen | image | link | preview | codesample | bullist numlist checklist |  alignleft aligncenter alignright',
             menubar: 'insert view',
             mobile: {
                 menubar: true
