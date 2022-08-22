@@ -48,12 +48,3 @@ Route::group(['middleware' => [AuthLogin::class]], static function () {
 Route::get('/test', function () {
     dd(authed()->user);
 })->name('test');
-Route::get('/send', [SendMailController::class, 'sendMail']);
-
-Route::group(['prefix' => 'social', 'middleware' => AuthLogin::class], static function () {
-    Route::get('/login', [SocialLoginController::class, 'login']);
-
-});
-Route::post('/test123', function (Request $request) {
-    dd($request->all());
-})->name('postok');

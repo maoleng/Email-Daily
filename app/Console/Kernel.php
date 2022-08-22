@@ -31,8 +31,6 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected $commands = [
-        Commands\LoopSendMail::class,
-        Commands\LoopSendMailVen::class,
         Commands\QueueMailHour2::class,
         Commands\QueueMailHour3::class,
         Commands\QueueMailHour4::class,
@@ -49,8 +47,6 @@ class Kernel extends ConsoleKernel
     ];
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('command:send_mail')->everyThirtyMinutes();
-        $schedule->command('command:send_mail_ven')->everyTwoHours();
         $schedule->command(QueueMailHour2::COMMAND)->cron(QueueMailHour2::CRON_TIME);
         $schedule->command(QueueMailHour3::COMMAND)->cron(QueueMailHour3::CRON_TIME);
         $schedule->command(QueueMailHour4::COMMAND)->cron(QueueMailHour4::CRON_TIME);
