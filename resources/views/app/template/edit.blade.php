@@ -128,6 +128,10 @@
     <script>
         tinymce.init({
             selector: 'textarea#myeditorinstance',
+            @if (isDarkMode())
+            content_css: 'tinymce-5-dark',
+            skin: 'oxide-dark',
+            @endif
             height: 270,
             plugins: 'advcode table checklist image advlist autolink lists link charmap preview codesample imagetool fullscreen',
             toolbar: 'insertfile | blocks| bold italic | fullscreen | image | link | preview | codesample | bullist numlist checklist |  alignleft aligncenter alignright',
