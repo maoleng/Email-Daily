@@ -46,7 +46,7 @@ class TemplateController extends Controller
 
     public function store(StoreRequest $request): RedirectResponse
     {
-        $data = $request->all();
+        $data = $request->validated();
         if (isset($data['date'], $data['time'])) {
             $date = Carbon::make($data['date'])->toDateString();
             $time = Carbon::make($data['time'])->toTimeString();
@@ -55,7 +55,7 @@ class TemplateController extends Controller
             'title' => $data['title'],
             'content' => $data['content'],
             'sender' => $data['sender'],
-            'cron_time' => $data['repeat_time'] ?? null,
+            'cron_time' => $data['cron_time'] ?? null,
             'date' => $date ?? null,
             'time' => $time ?? null,
             'banner' => Template::BANNER,
