@@ -164,12 +164,15 @@
             $("#button_submit").on('click', function () {
                 if ($("#toggle-repeat").is(':checked')) {
                     let repeat_time = $("#repeat_queue").val()
+                    $("#date").val(null)
+                    $("#time").val(null)
                     $("#repeat_time").val(repeat_time)
                 } else {
                     let date = $("#no_repeat_date").val()
                     let time = $("#no_repeat_time").val()
                     $("#date").val(date)
                     $("#time").val(time)
+                    $("#repeat_time").val(null)
                 }
                 $("#form").submit()
             })
