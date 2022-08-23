@@ -9,7 +9,10 @@ use App\Models\Template;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View as ViewReturn;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 
 class TemplateController extends Controller
 {
@@ -47,13 +50,29 @@ class TemplateController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         $data = $request->validated();
+        $mail_content = $data['content'];
+        preg_match_all('/data:image\/[A-Za-z-]+;base64.[A-Za-z+\/0-9=]+/', $data['content'], $matches, PREG_OFFSET_CAPTURE);
+        $images = $matches[0];
+        foreach ($images as $image) {
+            $content = base64_decode(explode(';base64,', $image[0])[1]);
+            $mime = $this->getMimeType($image[0]);
+            if (empty($mime)) {
+                Session::flash('message', 'Sai thể loại ảnh');
+                return redirect()->back();
+            }
+            $file_name = Str::random(15) . '.' . $mime;
+            Storage::disk('google')->put($file_name, $content);
+            $path = Storage::disk('google')->url($file_name);
+            $mail_content = str_replace($image[0], $path, $mail_content);
+        }
+
         if (isset($data['date'], $data['time'])) {
             $date = Carbon::make($data['date'])->toDateString();
             $time = Carbon::make($data['time'])->toTimeString();
         }
         Template::query()->create([
             'title' => $data['title'],
-            'content' => $data['content'],
+            'content' => $mail_content,
             'sender' => $data['sender'],
             'cron_time' => $data['cron_time'] ?? null,
             'date' => $date ?? null,
@@ -63,6 +82,31 @@ class TemplateController extends Controller
         ]);
 
         return redirect()->route('template.index');
+    }
+
+    public function getMimeType($base64): ?string
+    {
+        if (str_starts_with($base64, 'data:image/bmp')) {
+            return 'bmp';
+        }
+        if (str_starts_with($base64, 'data:image/jpeg')) {
+            return 'jpg';
+        }
+        if (str_starts_with($base64, 'data:image/png')) {
+            return 'png';
+        }
+        if (str_starts_with($base64, 'data:image/x-icon')) {
+            return 'ico';
+        }
+        if (str_starts_with($base64, 'data:image/webp')) {
+            return 'webp';
+        }
+        if (str_starts_with($base64, 'data:image/gif')) {
+            return 'gif';
+        }
+
+
+        return null;
     }
 
     public function update(StoreRequest $request, Template $template): RedirectResponse
