@@ -141,7 +141,10 @@
             },
             setup: function(editor) {
                 editor.on('init', function (e) {
-                    $(".tox-notification__dismiss.tox-button.tox-button--naked.tox-button--icon")[0].click()
+                    setTimeout(function() {
+                        $("button[tabindex='-1'].tox-notification__dismiss.tox-button.tox-button--naked.tox-button--icon")[0].click()
+                    }, 10);
+
                 })
             },
             file_picker_types: 'image',
