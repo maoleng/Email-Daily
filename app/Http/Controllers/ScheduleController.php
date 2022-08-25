@@ -33,10 +33,11 @@ class ScheduleController extends Controller
 
     public function toggleActive(Template $template): RedirectResponse
     {
-        if ($template->active === true) {
-            $template->update(['active' => false]);
+        $schedule = $template->schedule;
+        if ($schedule->active === true) {
+            $schedule->update(['active' => false]);
         } else {
-            $template->update(['active' => true]);
+            $schedule->update(['active' => true]);
         }
 
         return redirect()->route('template.index');

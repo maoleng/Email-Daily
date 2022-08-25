@@ -2,31 +2,19 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class ResetCounterSystemMail extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'command:name';
+    public const COMMAND = 'system_mail_counter:reset';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $signature = self::COMMAND;
+    protected $description = 'Đặt lại bộ đếm số tin nhắn đã gửi cho người dùng mỗi ngày';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): void
     {
-        return 0;
+        User::query()->where('count_system_mail_daily', '!=', 0)
+            ->update(['count_system_mail_daily' => 0]);
     }
 }

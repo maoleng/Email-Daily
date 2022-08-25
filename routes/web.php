@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Middleware\AuthLogin;
 use App\Http\Middleware\IfAlreadyLogin;
 use App\Models\Template;
+use Carbon\Carbon;
+use Cron\CronExpression;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 Route::get('/', static function () {
@@ -38,19 +41,21 @@ Route::group(['middleware' => [AuthLogin::class]], static function () {
         Route::post('/create', [TemplateController::class, 'store'])->name('store');
         Route::get('/edit/{template}', [TemplateController::class, 'edit'])->name('edit');
         Route::put('/update/{template}', [TemplateController::class, 'update'])->name('update');
-        Route::put('/toggle_active/{template}', [TemplateController::class, 'toggleActive'])->name('toggle_active');
         Route::delete('/{template}', [TemplateController::class, 'destroy'])->name('destroy');
+    });
+    Route::group(['prefix' => 'schedule', 'as' => 'schedule.'], static function () {
+        Route::put('/toggle_active/{template}', [ScheduleController::class, 'toggleActive'])->name('toggle_active');
     });
     Route::group(['prefix' => 'setting', 'as' => 'setting.'], static function () {
         Route::put('/update', [SettingController::class, 'update'])->name('update');
-    });});
+    });
+
+});
 
 
 Route::get('/test', function () {
-    $a = Template::query()
-        ->whereHas('schedule', static function ($q) {
-            $q->whereNull('cron_time')->where('active', true);
-        })
-        ->with('user')->get();
-    dd($a);
+    $cron = new CronExpression('0 */1 * * *');
+    $next_queue_time = $cron->getNextRunDate()->format('Y-m-d H:i:s');
+    $next_queue = Carbon::make($next_queue_time)->toDateTimeString();
+    dd($next_queue);
 })->name('test');
