@@ -43,7 +43,7 @@
                 <div class="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 before:bg-gradient-to-t before:from-black before:to-black/10">
                     <img alt="Midone - HTML Admin Template" class="rounded-md" src="{{$template->banner}}">
                     <span class="absolute top-0 bg-pending/80 text-white text-xs m-5 px-2 py-1 rounded z-10">
-                        @if (isset($template->cron_time)) Lặp @else Không lặp @endif
+                        @if (isset($template->schedule->cron_time)) Lặp @else Không lặp @endif
                     </span>
                     <div class="absolute bottom-0 text-white px-5 pb-6 z-10">
                         <a href="" class="block font-medium text-base">{{$template->title}}</a>
@@ -54,11 +54,11 @@
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="link" data-lucide="link" class="lucide lucide-link w-4 h-4 mr-2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path></svg>
                         Thời gian:
-                        @if (isset($template->cron_time)) {{$template->beautifulCronTime}} @else {{$template->dateTime}} @endif
+                        @if (isset($template->schedule->cron_time)) {{$template->schedule->beautifulCronTime}} @else {{$template->schedule->dateTime}} @endif
 
                     </div>
                     <div class="flex items-center mt-2">
-                        @if ($template->active === true)
+                        @if ($template->schedule->active === true)
                             <svg height="24" width="24" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2">
                                 <defs>
                                     <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
@@ -81,7 +81,7 @@
                         @else
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="stop-circle" data-lucide="stop-circle" class="lucide lucide-stop-circle w-4 h-4 mr-2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path></svg>
                         @endif
-                        Trạng thái: {{$template->nextQueueTime}}
+                        Trạng thái: {{$template->schedule->nextQueueTime}}
                     </div>
                     <div class="flex items-center mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="check-square" data-lucide="check-square" class="lucide lucide-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>

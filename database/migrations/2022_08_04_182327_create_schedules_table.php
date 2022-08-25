@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->timestamp('time');
+            $table->string('cron_time', 20)->nullable();
+            $table->date('date')->nullable();
+            $table->time('time')->nullable();
+            $table->integer('count')->default(0);
+            $table->boolean('active')->default(1);
             $table->uuid('template_id');
             $table->foreign('template_id')->references('id')->on('templates');
         });

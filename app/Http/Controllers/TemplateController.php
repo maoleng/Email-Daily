@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Template\StoreRequest;
 use App\Jobs\JobSendMails;
 use App\Mail\TemplateMail;
+use App\Models\Image;
+use App\Models\Schedule;
 use App\Models\Template;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View as ViewReturn;
@@ -24,7 +26,11 @@ class TemplateController extends Controller
 
     public function index(): ViewReturn
     {
-        $templates = Template::query()->where('user_id', authed()->id)->orderBy('created_at', 'DESC')->get();
+        $templates = Template::query()
+            ->where('user_id', authed()->id)
+            ->where('active', true)
+            ->with('schedule')
+            ->orderBy('created_at', 'DESC')->get();
 
         return view('app.template.index', [
             'templates' => $templates,
@@ -50,38 +56,56 @@ class TemplateController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $mail_content = $data['content'];
-        preg_match_all('/data:image\/[A-Za-z-]+;base64.[A-Za-z+\/0-9=]+/', $data['content'], $matches, PREG_OFFSET_CAPTURE);
-        $images = $matches[0];
-        foreach ($images as $image) {
-            $content = base64_decode(explode(';base64,', $image[0])[1]);
-            $mime = $this->getMimeType($image[0]);
-            if (empty($mime)) {
-                Session::flash('message', 'Sai thể loại ảnh');
-                return redirect()->back();
-            }
-            $file_name = Str::random(15) . '.' . $mime;
-            Storage::disk('google')->put($file_name, $content);
-            $path = Storage::disk('google')->url($file_name);
-            $mail_content = str_replace($image[0], $path, $mail_content);
-        }
 
+        $template = Template::query()->create([
+            'title' => $data['title'],
+            'sender' => $data['sender'],
+            'banner' => Template::BANNER,
+            'user_id' => authed()->id,
+        ]);
         if (isset($data['date'], $data['time'])) {
             $date = Carbon::make($data['date'])->toDateString();
             $time = Carbon::make($data['time'])->toTimeString();
         }
-        Template::query()->create([
-            'title' => $data['title'],
-            'content' => $mail_content,
-            'sender' => $data['sender'],
+        Schedule::query()->create([
             'cron_time' => $data['cron_time'] ?? null,
             'date' => $date ?? null,
             'time' => $time ?? null,
-            'banner' => Template::BANNER,
-            'user_id' => authed()->id,
+            'template_id' => $template->id,
         ]);
 
+        $mail_content = $this->handleImage($data['content'], $template);
+        $template->update(['content' => $mail_content]);
+
         return redirect()->route('template.index');
+    }
+
+    public function handleImage($mail_content, $template)
+    {
+        preg_match_all('/data:image\/[A-Za-z-]+;base64.[A-Za-z+\/0-9=]+/', $mail_content, $matches, PREG_OFFSET_CAPTURE);
+        $images = $matches[0];
+        if (isset($images)) {
+            foreach ($images as $image) {
+                $content = base64_decode(explode(';base64,', $image[0])[1]);
+                $mime = $this->getMimeType($image[0]);
+                if (empty($mime)) {
+                    Session::flash('message', 'Sai thể loại ảnh');
+                    return redirect()->back();
+                }
+                $path = 'user-' . authed()->id . '/template-' . $template->id . '/'. Str::random(15) . '.' . $mime;
+                Storage::disk('google')->put($path, $content);
+                $source = Storage::disk('google')->url($path);
+                Image::query()->create([
+                    'source' => $source,
+                    'size' => strlen($image[0]),
+                    'path' => $path,
+                    'template_id' => $template->id,
+                ]);
+                $mail_content = str_replace($image[0], $source, $mail_content);
+            }
+        }
+
+        return $mail_content;
     }
 
     public function getMimeType($base64): ?string
@@ -113,47 +137,43 @@ class TemplateController extends Controller
     {
         $data = $request->validated();
         if (isset($data['date'], $data['time'])) {
-            $data['date'] = Carbon::make($data['date'])->toDateString();
-            $data['time'] = Carbon::make($data['time'])->toTimeString();
+            $date = Carbon::make($data['date'])->toDateString();
+            $time = Carbon::make($data['time'])->toTimeString();
         }
-        $template->update($data);
+        $template->title = $data['title'];
+        $template->sender = $data['sender'];
+        $template->schedule->update([
+            'cron_time' => $data['cron_time'] ?? null,
+            'date' => $date ?? null,
+            'time' => $time ?? null,
+            'template_id' => $template->id,
+        ]);
+        $mail_content = $this->handleImage($data['content'], $template);
+        $template->content = $mail_content;
+        $template->save();
 
-        return redirect()->route('template.index');
-    }
-
-    public function queueMail($cron): void
-    {
-        $templates = Template::query()
-            ->where('cron_time', $cron)
-            ->where('active', true)
-            ->with('user')
-            ->get();
-        foreach ($templates as $template) {
-            $template_mail = new TemplateMail($template);
-            $domain = explode('@', $template->user->email)[1];
-            if ($domain === 'student.tdtu.edu.vn') {
-                $job_send_mail = new JobSendMails($template_mail, 'school', $template);
-            } else {
-                $job_send_mail = new JobSendMails($template_mail, 'normal', $template);
+        preg_match_all('/https:\/\/drive\.google\.com\/uc\?id=[A-Za-z0-9_\-&;]+export=media/', $mail_content, $matches);
+        $urls = collect($matches[0])->map(static function ($url) {
+            return str_replace('&amp;', '&', $url);
+        })->toArray();
+        $old_urls = $template->images->pluck('source', 'id')->toArray();
+        $remove_images = [];
+        foreach ($old_urls as $id => $old_url) {
+            if (!in_array($old_url, $urls, true)) {
+                $remove_images[] = $id;
             }
-            dispatch($job_send_mail);
         }
-    }
-
-    public function toggleActive(Template $template): RedirectResponse
-    {
-        if ($template->active === true) {
-            $template->update(['active' => false]);
-        } else {
-            $template->update(['active' => true]);
-        }
+        Image::query()->whereIn('id', $remove_images)->update(['active' => false]);
 
         return redirect()->route('template.index');
     }
 
     public function destroy(Template $template): RedirectResponse
     {
-        $template->delete();
+        $template->schedule->delete();
+        $template->update(['active' => false]);
+        $image_ids = $template->images->pluck('id');
+        Image::query()->whereIn('id', $image_ids)->update(['active' => false]);
 
         return redirect()->route('template.index');
     }

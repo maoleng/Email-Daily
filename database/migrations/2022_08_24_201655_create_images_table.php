@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('templates', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title', 250);
-            $table->longText('content')->nullable();
-            $table->string('sender', 250)->nullable();
-            $table->text('banner');
+            $table->string('source', 250);
+            $table->string('path', 250);
+            $table->float('size');
             $table->boolean('active')->default(1);
-            $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
+            $table->uuid('template_id');
+            $table->foreign('template_id')->references('id')->on('templates');
         });
     }
 
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('templates');
+        Schema::dropIfExists('images');
     }
 };
