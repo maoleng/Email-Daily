@@ -62,7 +62,10 @@ class Kernel extends ConsoleKernel
         $schedule->command(QueueMailDay7::COMMAND)->cron(QueueMailDay7::CRON_TIME);
 
 
-        $templates = Template::query()->whereNull('cron_time')->where('active', true)
+        $templates = Template::query()
+            ->whereHas('schedule', static function ($q) {
+                $q->whereNull('cron_time')->where('active', true);
+            })
             ->with('user')->get();
         foreach ($templates as $template) {
             $time = Carbon::create($template->date . ' ' . $template->time);

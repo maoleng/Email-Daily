@@ -13,10 +13,12 @@ class ScheduleController extends Controller
     public function queueMail($cron): void
     {
         $templates = Template::query()
-            ->where('cron_time', $cron)
-            ->where('active', true)
+            ->whereHas('schedule', static function ($q) use ($cron) {
+                $q->where('cron_time', $cron)->where('active', true);
+            })
             ->with('user')
             ->get();
+
         foreach ($templates as $template) {
             $template_mail = new TemplateMail($template);
             $domain = explode('@', $template->user->email)[1];

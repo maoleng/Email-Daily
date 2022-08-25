@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Console\Command;
 
 class QueueMailHour2 extends Command
@@ -16,6 +16,6 @@ class QueueMailHour2 extends Command
 
     public function handle(): void
     {
-        (new TemplateController)->queueMail(self::CRON_TIME);
+        (new ScheduleController)->queueMail(self::CRON_TIME);
     }
 }

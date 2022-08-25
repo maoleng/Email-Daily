@@ -7,6 +7,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Middleware\AuthLogin;
 use App\Http\Middleware\IfAlreadyLogin;
+use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 Route::get('/', static function () {
@@ -46,5 +47,10 @@ Route::group(['middleware' => [AuthLogin::class]], static function () {
 
 
 Route::get('/test', function () {
-    dd(authed()->user);
+    $a = Template::query()
+        ->whereHas('schedule', static function ($q) {
+            $q->whereNull('cron_time')->where('active', true);
+        })
+        ->with('user')->get();
+    dd($a);
 })->name('test');
