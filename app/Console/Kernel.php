@@ -75,7 +75,8 @@ class Kernel extends ConsoleKernel
                     $job_send_mail = new JobSendMails($template_mail, 'normal', $template);
                 }
                 dispatch($job_send_mail);
-                $template->update(['active' => false]);
+                $template->schedule->increment('count');
+                $template->schedule->update(['active' => false]);
             })->when(function () use ($time) {
                 return $time->toDateTimeString() === now()->seconds(0)->toDateTimeString();
             });

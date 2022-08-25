@@ -28,6 +28,7 @@ class ScheduleController extends Controller
                 $job_send_mail = new JobSendMails($template_mail, 'normal', $template);
             }
             dispatch($job_send_mail);
+            $template->schedule->increment('count');
         }
     }
 
