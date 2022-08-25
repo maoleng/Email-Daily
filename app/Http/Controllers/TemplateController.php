@@ -80,6 +80,51 @@ class TemplateController extends Controller
         return redirect()->route('template.index');
     }
 
+    public function update(StoreRequest $request, Template $template): RedirectResponse
+    {
+        $data = $request->validated();
+        if (isset($data['date'], $data['time'])) {
+            $date = Carbon::make($data['date'])->toDateString();
+            $time = Carbon::make($data['time'])->toTimeString();
+        }
+        $template->title = $data['title'];
+        $template->sender = $data['sender'];
+        $template->schedule->update([
+            'cron_time' => $data['cron_time'] ?? null,
+            'date' => $date ?? null,
+            'time' => $time ?? null,
+            'template_id' => $template->id,
+        ]);
+        $mail_content = $this->handleImage($data['content'], $template);
+        $template->content = $mail_content;
+        $template->save();
+
+        preg_match_all('/https:\/\/drive\.google\.com\/uc\?id=[A-Za-z0-9_\-&;]+export=media/', $mail_content, $matches);
+        $urls = collect($matches[0])->map(static function ($url) {
+            return str_replace('&amp;', '&', $url);
+        })->toArray();
+        $old_urls = $template->images->pluck('source', 'id')->toArray();
+        $remove_images = [];
+        foreach ($old_urls as $id => $old_url) {
+            if (!in_array($old_url, $urls, true)) {
+                $remove_images[] = $id;
+            }
+        }
+        Image::query()->whereIn('id', $remove_images)->update(['active' => false]);
+
+        return redirect()->route('template.index');
+    }
+
+    public function destroy(Template $template): RedirectResponse
+    {
+        $template->schedule->delete();
+        $template->update(['active' => false]);
+        $image_ids = $template->images->pluck('id');
+        Image::query()->whereIn('id', $image_ids)->update(['active' => false]);
+
+        return redirect()->route('template.index');
+    }
+
     public function handleImage($mail_content, $template)
     {
         preg_match_all('/data:image\/[A-Za-z-]+;base64.[A-Za-z+\/0-9=]+/', $mail_content, $matches, PREG_OFFSET_CAPTURE);
@@ -129,53 +174,6 @@ class TemplateController extends Controller
             return 'gif';
         }
 
-
         return null;
     }
-
-    public function update(StoreRequest $request, Template $template): RedirectResponse
-    {
-        $data = $request->validated();
-        if (isset($data['date'], $data['time'])) {
-            $date = Carbon::make($data['date'])->toDateString();
-            $time = Carbon::make($data['time'])->toTimeString();
-        }
-        $template->title = $data['title'];
-        $template->sender = $data['sender'];
-        $template->schedule->update([
-            'cron_time' => $data['cron_time'] ?? null,
-            'date' => $date ?? null,
-            'time' => $time ?? null,
-            'template_id' => $template->id,
-        ]);
-        $mail_content = $this->handleImage($data['content'], $template);
-        $template->content = $mail_content;
-        $template->save();
-
-        preg_match_all('/https:\/\/drive\.google\.com\/uc\?id=[A-Za-z0-9_\-&;]+export=media/', $mail_content, $matches);
-        $urls = collect($matches[0])->map(static function ($url) {
-            return str_replace('&amp;', '&', $url);
-        })->toArray();
-        $old_urls = $template->images->pluck('source', 'id')->toArray();
-        $remove_images = [];
-        foreach ($old_urls as $id => $old_url) {
-            if (!in_array($old_url, $urls, true)) {
-                $remove_images[] = $id;
-            }
-        }
-        Image::query()->whereIn('id', $remove_images)->update(['active' => false]);
-
-        return redirect()->route('template.index');
-    }
-
-    public function destroy(Template $template): RedirectResponse
-    {
-        $template->schedule->delete();
-        $template->update(['active' => false]);
-        $image_ids = $template->images->pluck('id');
-        Image::query()->whereIn('id', $image_ids)->update(['active' => false]);
-
-        return redirect()->route('template.index');
-    }
-
 }
